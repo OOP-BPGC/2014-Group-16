@@ -1,4 +1,5 @@
 
+
 import junit.framework.*;
 import static org.easymock.EasyMock.createNiceMock;
 import static org.easymock.EasyMock.expect;
@@ -8,14 +9,12 @@ import static org.easymock.EasyMock.verify;
 public class testMessEmployee extends TestCase{
 	
 	private MessEmployee employee;
-	private MessCustomer newstudent;
-	private MessEmployee newemployee;
+	private MessCustomer student;
 	private BitsDatabase data;
 	public void setUp() throws Exception {
 		employee = createNiceMock(MessEmployee.class);
-		newstudent = createNiceMock(MessCustomer.class);
+		student = createNiceMock(MessCustomer.class);
 		data = createNiceMock(BitsDatabase.class);
-		newemployee = createNiceMock(MessEmployee.class);
 		}
 	
 	public void testDoEmployeeAuth(){
@@ -31,15 +30,14 @@ public class testMessEmployee extends TestCase{
 	}
 	
 	public void testsetMenu(){
-	
+		int day,time;
+		try{
+			employee.setMenu(0,0,null);
+	}
+		catch (Exception e){
+			
+		}
 		employee.setMenu(3, 3, "new_menu");
-		
-		expect(employee.getMenu(3, 3)).andReturn("Wednesday Dinner Menu:-");
-		replay(employee);
-		
-		assertEquals("Wednesday Dinner Menu:-",employee.getMenu(3, 3));
-		verify(employee);
-		
 	}
 	
 	public void testGetMenu(){
@@ -67,14 +65,13 @@ public class testMessEmployee extends TestCase{
 	}
 	
 	public void testsetShift(){
-		
-		employee.setShift(employee, "mwf morning");
-		
-		expect(employee.getShift(employee)).andReturn("mwf morning");
-		replay(employee);
-		
-		assertEquals("mwf morning", employee.getShift(employee));
-		verify(employee);
+		try{
+			employee.setShift(null,null);
+	
+		}
+		catch(Exception e){
+			fail("Exception should not have occured");
+		}
 		
 	}
 	
@@ -110,13 +107,14 @@ public class testMessEmployee extends TestCase{
 	
 	public void testupdateFoodstock(){
 		
-		employee.updateFoodstock(10, "Rice");
+		try{
+			employee.updateFoodstock(0,null);
 		
-		expect(employee.getFoodstock()).andReturn("Foodstock is .....Rice - 10kg");
-		replay(employee);
+		}
+		catch(Exception e){
+			fail("Exception should not have occured");
+		}
 		
-		assertEquals("Foodstock is .....Rice - 10kg", employee.getFoodstock());
-		verify(employee);
 		
 	}
 
@@ -152,25 +150,25 @@ public class testMessEmployee extends TestCase{
 	
 	public void testupdateStudentDatabse(){
 		
-		employee.updateStudentDatabse(newstudent, true);
+		try{
+			employee.updateStudentDatabse(null,false);
 		
-		expect(data.getStudentList()).andReturn("Student list contains newstudent");
-		replay(data);
-		
-		assertEquals("Student list contains newstudent", data.getStudentList());
-		verify(data);
+		}
+		catch(Exception e){
+			fail("Exception should not have occured");
+		}
+	
 		
 }
 	
 	public void testupdateEmployeedatabase(){
 		
-		employee.updateEmployeedatabase(newemployee, true);
-		
-		expect(data.getMessEmployeeList()).andReturn("Employee list contains newemployee");
-		replay(data);
-		
-		assertEquals("Employee list contains newemployee", data.getMessEmployeeList());
-		verify(data);
+		try{
+			employee.updateEmployeedatabase(null,false);
+		}
+		catch(Exception e){
+			fail("Exception should not have occured");
+		}
 		
 	}
 
