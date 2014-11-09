@@ -9,16 +9,16 @@ public class TestBillingAccount extends TestCase {
 	public void setUp()throws Exception {
 		mockBillingAccount = createNiceMock(BillingAccount.class);
 		}
-	public void TestGetBalance(){
+	public void testGetBalance(){
 		expect(mockBillingAccount.getBalance()).andReturn(10000);
 		replay(mockBillingAccount);
 		assertEquals(10000,mockBillingAccount.getBalance(),0);
 		verify(mockBillingAccount);
 		}
-	public void TestAddCredit(int credit){
+	public void testAddCredit(int credit){
 		mockBillingAccount.AddCredit(15000);
 	}
-	public void TestDebitCredit(int debit){
+	public void testDebitCredit(int debit){
 		mockBillingAccount.AddDebit(10000);
 	}
 }

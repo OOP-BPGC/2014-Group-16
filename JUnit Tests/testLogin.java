@@ -1,4 +1,3 @@
-package oop_project;
 
 import junit.framework.*;
 import static org.easymock.EasyMock.createNiceMock;
@@ -8,8 +7,10 @@ import static org.easymock.EasyMock.verify;
 
 public class testLogin extends TestCase {
 	
-	Login login = new Login();
-	
+	private Login login;
+	public void setUp() throws Exception {
+		login = createNiceMock(Login.class);
+		}
 	public void testCustomerAuth(){
 		
 		expect(login.CustomerAuth("username", "truepwd")).andReturn(true);
@@ -42,7 +43,7 @@ public class testLogin extends TestCase {
 	public void testcheckIDcard(){
 		
 		expect(login.checkIDcard("validID")).andReturn(true);
-		expect(login.checkIDcard("invalidID")).andReturn(true);
+		expect(login.checkIDcard("invalidID")).andReturn(false);
 		replay(login);
 		
 		assertEquals(true, login.checkIDcard("validID"));

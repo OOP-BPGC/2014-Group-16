@@ -1,4 +1,3 @@
-package oop_project;
 
 import junit.framework.*;
 import static org.easymock.EasyMock.createNiceMock;
@@ -9,12 +8,14 @@ import static org.easymock.EasyMock.verify;
 public class testMessEmployee extends TestCase{
 	
 	private MessEmployee employee;
-	private MessCustomer student;
+	private MessCustomer newstudent;
+	private MessEmployee newemployee;
 	private BitsDatabase data;
 	public void setUp() throws Exception {
 		employee = createNiceMock(MessEmployee.class);
-		student = createNiceMock(MessCustomer.class);
+		newstudent = createNiceMock(MessCustomer.class);
 		data = createNiceMock(BitsDatabase.class);
+		newemployee = createNiceMock(MessEmployee.class);
 		}
 	
 	public void testDoEmployeeAuth(){
@@ -30,14 +31,15 @@ public class testMessEmployee extends TestCase{
 	}
 	
 	public void testsetMenu(){
-		int day,time;
-		try{
-			employee.setMenu(null);
-	}
-		catch (Exception e){
-			
-		}
+	
 		employee.setMenu(3, 3, "new_menu");
+		
+		expect(employee.getMenu(3, 3)).andReturn("Wednesday Dinner Menu:-");
+		replay(employee);
+		
+		assertEquals("Wednesday Dinner Menu:-",employee.getMenu(3, 3));
+		verify(employee);
+		
 	}
 	
 	public void testGetMenu(){
@@ -65,16 +67,15 @@ public class testMessEmployee extends TestCase{
 	}
 	
 	public void testsetShift(){
-		try{
-			employee.setShift(null);
-		fail("Exception should have occured");
-		}
-		catch(Exception e){
-			
-		}
-		{
-		employee.setShift(employee, "tts evening");
-		}
+		
+		employee.setShift(employee, "mwf morning");
+		
+		expect(employee.getShift(employee)).andReturn("mwf morning");
+		replay(employee);
+		
+		assertEquals("mwf morning", employee.getShift(employee));
+		verify(employee);
+		
 	}
 	
 	public void testgetStudentList(){
@@ -109,16 +110,13 @@ public class testMessEmployee extends TestCase{
 	
 	public void testupdateFoodstock(){
 		
-		try{
-			employee.updateFoodstock(null);
-		fail("Exception should have occured");
-		}
-		catch(Exception e){
-			
-		}
-		{
-		employee.updateFoodstock(30, "wheat");
-		}
+		employee.updateFoodstock(10, "Rice");
+		
+		expect(employee.getFoodstock()).andReturn("Foodstock is .....Rice - 10kg");
+		replay(employee);
+		
+		assertEquals("Foodstock is .....Rice - 10kg", employee.getFoodstock());
+		verify(employee);
 		
 	}
 
@@ -154,31 +152,25 @@ public class testMessEmployee extends TestCase{
 	
 	public void testupdateStudentDatabse(){
 		
-		try{
-			employee.updateStudentDatabse(null);
-		fail("Exception should have occured");
-		}
-		catch(Exception e){
-			
-		}
-		{
-		employee.updateStudentDatabse(student, true);
-		}
+		employee.updateStudentDatabse(newstudent, true);
+		
+		expect(data.getStudentList()).andReturn("Student list contains newstudent");
+		replay(data);
+		
+		assertEquals("Student list contains newstudent", data.getStudentList());
+		verify(data);
 		
 }
 	
 	public void testupdateEmployeedatabase(){
 		
-		try{
-			employee.updateEmployeedatabase(null);
-		fail("Exception should have occured");
-		}
-		catch(Exception e){
-			
-		}
-		{
-		employee.updateEmployeedatabase(employee, true);
-		}
+		employee.updateEmployeedatabase(newemployee, true);
+		
+		expect(data.getMessEmployeeList()).andReturn("Employee list contains newemployee");
+		replay(data);
+		
+		assertEquals("Employee list contains newemployee", data.getMessEmployeeList());
+		verify(data);
 		
 	}
 

@@ -1,4 +1,3 @@
-package oop_project;
 
 public class FoodStock {
 

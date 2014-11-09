@@ -9,17 +9,17 @@ public class TestFeedback extends TestCase{
 	public void setUp() throws Exception {
 		mockFeedback = createNiceMock(Feedback.class);
 		}
-	public void TestGiveFeedback(){
+	public void testGiveFeedback(){
 		try{
 			mockFeedback.giveFeedback(null);
-		fail("Exception should have occured");
+		
 		}
 		catch(Exception e){
-			
+			fail("Exception should not have occured");	
 		}
 		mockFeedback.giveFeedback("The food should be a bit more spicy");
 		}
-	public void TestGetFeedback(){
+	public void testGetFeedback(){
 		expect(mockFeedback.getFeedback()).andReturn("Lime should be there atleast two days a week");
 		replay(mockFeedback);
 		assertEquals("Lime should be there atleast two days a week",mockFeedback.getFeedback());

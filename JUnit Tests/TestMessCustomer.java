@@ -47,10 +47,10 @@ verify(MckMessCustomer);
 public void testFeedback(){
 try{
 MckMessCustomer.giveFeedback(null);
-fail("Exception should have occured");
+
 }
 catch(Exception e){
-	
+	fail("Exception should not have occured");
 }
 MckMessCustomer.giveFeedback("The food should be a bit more spicy");
 }
