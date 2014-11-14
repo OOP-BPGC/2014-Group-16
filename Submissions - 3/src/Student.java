@@ -8,47 +8,50 @@ import java.sql.*;
  */
 public class Student implements MessCustomer{
 	
-	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-	static final String STUDENT_DB_URL = "jdbc:mysql://localhost/Students";
+	//static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
+	//tatic final String STUDENT_DB_URL = "jdbc:mysql://localhost/Students";
 
 	String name;
 	String password;
 	String idNumber;
 	final String username = idNumber;
+	
 	boolean hasEaten;
+	
 	Mess mess = new Mess();
 	Accounts account;
 	Feedback feedback;
+	BitsDatabase bitsdatabase = new BitsDatabase();
+	
 	boolean authStatus;
 	boolean checkinStatus;
 	
-	Connection connection = null;
-	Statement statement = null;
-	ResultSet resultset = null;
 	
 	public Student() {
 		this.name = "";
 		this.idNumber = "";
 		this.hasEaten = false;
+		this.authStatus = false;
+		this.checkinStatus = false;
 	}
 	
 	public String getIdNumber(String name) {
 		boolean got = false;
 		try{
-		      statement = connection.createStatement();
+			bitsdatabase.setupStudentDB();
 		      
 		      String sql = "SELECT idno FROM Students WHERE name = '" + name + "'";
-		      resultset = statement.executeQuery(sql);
+		      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
 		      
-		      while(resultset.next()){
+		      while(bitsdatabase.resultset.next()){
 	    		  //Retrieve by column name
-	    		  this.idNumber = resultset.getString("idno");
+	    		  this.idNumber = bitsdatabase.resultset.getString("idno");
 	    		  got = true;
 		      }
 	      		
 		      if(got == false) {
 	      			System.out.println("Unable to get ID. Student Name not found.");
-	    		  	shutdowndb();
+	      			bitsdatabase.shutdownDB();
 	      			return "";
 	      		}
 		}catch(SQLException se){
@@ -59,7 +62,7 @@ public class Student implements MessCustomer{
 		      e.printStackTrace();
 		  }finally{
 		      //finally block used to close resources
-		    	  shutdowndb();
+			  bitsdatabase.shutdownDB();
 		   }
 		      
 		return this.idNumber;
@@ -68,20 +71,20 @@ public class Student implements MessCustomer{
 	public String getName(String idNumber) {
 		boolean got = false;
 		try{
-		      statement = connection.createStatement();
+			bitsdatabase.setupStudentDB();
 		      
 		      String sql = "SELECT name FROM Students WHERE IDNO = '" + idNumber + "'";
-		      resultset = statement.executeQuery(sql);
+		      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
 		      
-		      while(resultset.next()){
+		      while(bitsdatabase.resultset.next()){
 	    		  //Retrieve by column name
-	    		  this.name = resultset.getString("name");
+	    		  this.name = bitsdatabase.resultset.getString("name");
 	    		  got = true;
 		      }
 	      		
 		      if(got == false) {
 	      			System.out.println("Unable to get name. Student ID not found.");
-	    		  	shutdowndb();
+	      			bitsdatabase.shutdownDB();
 	      			return "";
 	      		}
 		}catch(SQLException se){
@@ -92,7 +95,7 @@ public class Student implements MessCustomer{
 		      e.printStackTrace();
 		  }finally{
 		      //finally block used to close resources
-		    	  shutdowndb();
+			  bitsdatabase.shutdownDB();
 		   }
 		      
 		return this.name;
@@ -101,19 +104,19 @@ public class Student implements MessCustomer{
 	public String getMessChosen(String idNumber) {
 		boolean got = false;
 		try{
-		      statement = connection.createStatement();
+			bitsdatabase.setupStudentDB();
 		      
 		      String sql = "SELECT mess FROM Students WHERE IDNO = '" + idNumber + "'";
-		      resultset = statement.executeQuery(sql);
+		      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
 		      
-		      while(resultset.next()){
+		      while(bitsdatabase.resultset.next()){
 		    		  //Retrieve by column name
-		    		  this.mess.messName = resultset.getString("mess");
+		    		  this.mess.messName = bitsdatabase.resultset.getString("mess");
 		    		  got = true;
 		      }
 		      		if(got == false) {
 		      			System.out.println("Unable to get Mess. Student ID not found.");
-		    		  	shutdowndb();
+		      			bitsdatabase.shutdownDB();
 		      			return "";
 		      		}
 		   }catch(SQLException se){
@@ -124,7 +127,7 @@ public class Student implements MessCustomer{
 		      e.printStackTrace();
 		   }finally{
 		      //finally block used to close resources
-		    	  shutdowndb();
+			   bitsdatabase.shutdownDB();
 		   }//end try
 		
 		return this.mess.messName;		
@@ -132,20 +135,19 @@ public class Student implements MessCustomer{
 	
 	public boolean getHasEaten(String idNumber){	
 		boolean got = false;
-		try{
-		      statement = connection.createStatement();
-		      
+		try{  
+			  bitsdatabase.setupStudentDB();
 		      String sql = "SELECT haseaten FROM Students WHERE IDNO = '" + idNumber + "'";
-		      resultset = statement.executeQuery(sql);
+		      this.bitsdatabase.resultset = this.bitsdatabase.statement.executeQuery(sql);
 		      
-		      while(resultset.next()){
+		      while(bitsdatabase.resultset.next()){
 		    		  //Retrieve by column name
-		    		  this.hasEaten = resultset.getBoolean("haseaten");
+		    		  this.hasEaten = bitsdatabase.resultset.getBoolean("haseaten");
 		    		  got = true;
 		      }
 		      		if(got == false) {
 		      			System.out.println("Failed. Student ID not found.");
-		    		  	shutdowndb();
+		      			bitsdatabase.shutdownDB();
 		      			return false;
 		      		}
 		   }catch(SQLException se){
@@ -156,7 +158,7 @@ public class Student implements MessCustomer{
 		      e.printStackTrace();
 		   }finally{
 		      //finally block used to close resources
-		    	  shutdowndb();
+			   bitsdatabase.shutdownDB();
 		   }//end try
 		
 		return this.hasEaten;		
@@ -165,19 +167,19 @@ public class Student implements MessCustomer{
 	public String getPassword(String idNumber) {
 		boolean got = false;
 		try{
-		      statement = connection.createStatement();
+			bitsdatabase.setupStudentDB();
 		      
 		      String sql = "SELECT password FROM Students WHERE IDNO = '" + idNumber + "'";
-		      resultset = statement.executeQuery(sql);
+		      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
 		      
-		      while(resultset.next()){
+		      while(bitsdatabase.resultset.next()){
 		    		  //Retrieve by column name
-		    		  password = resultset.getString("password");
+		    		  password = bitsdatabase.resultset.getString("password");
 		    		  got = true;
 		      }
 		      		if(got == false) {
 		      			System.out.println("Unable to get password. Student ID not found.");
-		    		  	shutdowndb();
+		      			bitsdatabase.shutdownDB();
 		      			return "";
 		      		}
 		   }catch(SQLException se){
@@ -188,7 +190,7 @@ public class Student implements MessCustomer{
 		      e.printStackTrace();
 		   }finally{
 		      //finally block used to close resources
-		    	  shutdowndb();
+			   bitsdatabase.shutdownDB();
 		   }//end try
 		return password;
 	}
@@ -200,10 +202,10 @@ public class Student implements MessCustomer{
 		//copy to database
 		try{  
 			//Execute Query
-		      statement = connection.createStatement();
+			bitsdatabase.setupStudentDB();
 		      
 		      String sql = "UPDATE Students " + "SET idno = '" + idNumber + "'" + " WHERE id = '" + idNumber + "'";
-		      statement.executeUpdate(sql);
+		      bitsdatabase.statement.executeUpdate(sql);
 		      
 			}catch(SQLException se){
 				//Handle errors for JDBC
@@ -213,7 +215,7 @@ public class Student implements MessCustomer{
 				e.printStackTrace();
 			}finally{
 				//finally block used to close resources
-				shutdowndb();
+				bitsdatabase.shutdownDB();
 			}//end try   
 	}
 
@@ -223,10 +225,10 @@ public class Student implements MessCustomer{
 		//copy to database
 				try{  
 					//Execute Query
-				      statement = connection.createStatement();
+					bitsdatabase.setupStudentDB();
 				      
 				      String sql = "UPDATE Students " + "SET name = '" + name + "'" + " WHERE id = '" + idNumber + "'";
-				      statement.executeUpdate(sql);
+				      bitsdatabase.statement.executeUpdate(sql);
 				      
 					}catch(SQLException se){
 						//Handle errors for JDBC
@@ -236,7 +238,7 @@ public class Student implements MessCustomer{
 						e.printStackTrace();
 					}finally{
 						//finally block used to close resources
-						shutdowndb();
+						bitsdatabase.shutdownDB();
 					}//end try   
 		
 	}
@@ -247,10 +249,10 @@ public class Student implements MessCustomer{
 		//copy to database
 				try{  
 					//Execute Query
-				      statement = connection.createStatement();
+					bitsdatabase.setupStudentDB();
 				      
 				      String sql = "UPDATE Students " + "SET mess = '" + mess + "'" + " WHERE id = '" + idNumber + "'";
-				      statement.executeUpdate(sql);
+				      bitsdatabase.statement.executeUpdate(sql);
 				      
 					}catch(SQLException se){
 						//Handle errors for JDBC
@@ -260,7 +262,7 @@ public class Student implements MessCustomer{
 						e.printStackTrace();
 					}finally{
 						//finally block used to close resources
-						shutdowndb();
+						bitsdatabase.shutdownDB();
 					}//end try   
 	}
 	
@@ -270,10 +272,10 @@ public class Student implements MessCustomer{
 		//copy to database
 				try{  
 					//Execute Query
-				      statement = connection.createStatement();
+					bitsdatabase.setupStudentDB();
 				      
 				      String sql = "UPDATE Students " + "SET haseaten = '" + String.valueOf(hasEaten) + "'" + " WHERE id = '" + idNumber + "'";
-				      statement.executeUpdate(sql);
+				      bitsdatabase.statement.executeUpdate(sql);
 				      
 					}catch(SQLException se){
 						//Handle errors for JDBC
@@ -283,7 +285,7 @@ public class Student implements MessCustomer{
 						e.printStackTrace();
 					}finally{
 						//finally block used to close resources
-						shutdowndb();
+						bitsdatabase.shutdownDB();
 					}//end try   
 		
 	}	
@@ -294,10 +296,10 @@ public class Student implements MessCustomer{
 		//copy to database
 		try{  
 			//Execute Query
-		      statement = connection.createStatement();
+			bitsdatabase.setupStudentDB();
 		      
 		      String sql = "UPDATE Students " + "SET password = '" + pswd + "'" + " WHERE id = '" + idNumber + "'";
-		      statement.executeUpdate(sql);
+		      bitsdatabase.statement.executeUpdate(sql);
 		      
 			}catch(SQLException se){
 				//Handle errors for JDBC
@@ -307,7 +309,7 @@ public class Student implements MessCustomer{
 				e.printStackTrace();
 			}finally{
 				//finally block used to close resources
-				shutdowndb();
+				bitsdatabase.shutdownDB();
 			}//end try   
 		
 	}
@@ -320,14 +322,6 @@ public class Student implements MessCustomer{
 		}
 	}	
 	
-	public void shutdowndb() {
-		try{
-			if(connection!=null)
-				connection.close();
-		}catch(SQLException se){
-			se.printStackTrace();
-		}
-	}
 	
 	
 }

@@ -1,10 +1,6 @@
 package src;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 /**
  * 
@@ -12,9 +8,10 @@ import java.sql.Statement;
  *
  */
 public class Login {
-	boolean loginStatus;
+	
 	Student student = new Student();
 	Guest guest;
+	BitsDatabase bitsdatabase = new BitsDatabase();
 	
 	String username = "root";
 	String password = "12345";
@@ -22,54 +19,47 @@ public class Login {
 	String checkusr = "";
 	String checkpass = "";
 	
-	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-	static final String STUDENT_DB_URL = "jdbc:mysql://localhost/Students";
-	static final String GUEST_DB_URL = "jdbc:mysql://localhost/Guests";
-	
-	Connection connection = null;
-	Statement statement = null;
-	ResultSet resultset = null;
-	
 	boolean doStudentLogin(String idNumber, String password) {
 		this.checkusr = idNumber;
 		this.checkpass = password;
 		
 		boolean match = false;
 		try{
-			  setupdb();
-		      statement = connection.createStatement();
+			bitsdatabase.setupStudentDB();
 		      
 		      String sqlu = "SELECT idno FROM Students WHERE IDNO = '" + idNumber + "'";
-		      resultset = statement.executeQuery(sqlu);
+		      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sqlu);
 		      
-		      while(resultset.next()){
+		      while(bitsdatabase.resultset.next()){
 		    		  //Retrieve by column name
-		    	  	this.student.idNumber = resultset.getString("idno");
+		    	  	this.student.idNumber = bitsdatabase.resultset.getString("idno");
 		    		  match = true;
 		      }
 		      
 		      //Check user
 		      if(match == true && this.student.idNumber.equalsIgnoreCase(checkusr)) {
-		    	  System.out.println("Student Username Found.");
+		    	  System.out.println("Student Username Matched.");
 		    	  try{
-				      statement = connection.createStatement();
+		    		  bitsdatabase.setupStudentDB();
 				      
 				      String sqlp = "SELECT password FROM Students WHERE IDNO = '" + idNumber + "'";
-				      resultset = statement.executeQuery(sqlp);
+				      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sqlp);
 				      
-				      while(resultset.next()){
+				      while(bitsdatabase.resultset.next()){
 				    		  //Retrieve by column name
-				    	  	this.student.password = resultset.getString("password");
+				    	  	this.student.password = bitsdatabase.resultset.getString("password");
 				    		  match = true;
 				      }
 				      if(match == true && this.student.password.equals(checkpass)) {
-				    	  System.out.println("Password Matched. Loggin In.");
-				    	  shutdowndb();
+				    	  System.out.println("Password Matched. Logged In.");
+				    	  this.student.authStatus = true;
+				    	  bitsdatabase.shutdownDB();
 				    	  return true;
 				      }
 				      else {
 				    	  System.out.println("Login Failed. Incorrect password.");
-				      	  shutdowndb();
+				    	  this.student.authStatus = false;
+				    	  bitsdatabase.shutdownDB();
 				      	  return false;
 				      }
 	      		}catch(SQLException se){
@@ -80,12 +70,13 @@ public class Login {
 	  		      e.printStackTrace();
 	      		  }finally{
 	  		      //finally block used to close resources
-	  		    	  shutdowndb();
+	      			bitsdatabase.shutdownDB();
 	      		   }
 		      }
 		      else{
 		    	  System.out.println("Login Failed. Student ID not found.");
-	    		  	shutdowndb();
+		    	  this.student.authStatus = false;
+		    	  bitsdatabase.shutdownDB();
 	      			return false;
 		      }
 		      
@@ -97,7 +88,7 @@ public class Login {
 		      e.printStackTrace();
 		   }finally{
 		      //finally block used to close resources
-		    	  shutdowndb();
+			   bitsdatabase.shutdownDB();
 		   }//end try
 		return false;
 		
@@ -108,10 +99,10 @@ public class Login {
 		//set this.student to an object corresponding to idNumber in student database
 		//Database - Sr.No, ID, Name, Mess, HasEaten, Password
 			this.student.idNumber = idNumber;
-			setupstudentdb(); 
+			bitsdatabase.setupStudentDB(); 
 			this.student.hasEaten = this.student.getHasEaten(idNumber);			
 			
-			setupstudentdb();
+			bitsdatabase.setupStudentDB();
 			this.student.mess.messName = this.student.getMessChosen(idNumber);
 			
 			if(!this.student.mess.messName.equals(messName) || this.student.hasEaten == true) {
@@ -122,7 +113,7 @@ public class Login {
 			else {
 				student.checkinStatus = true;
 				System.out.println("Checkin Successful.");
-				setupstudentdb();				
+				bitsdatabase.setupStudentDB();				
 				this.student.setHasEaten(true,idNumber);
 				return true;
 			}			
@@ -130,60 +121,10 @@ public class Login {
 	
 	boolean doGuestCheckIn(String name) {
 		this.guest.name = name;	
-		setupguestdb();
+		bitsdatabase.setupGuestDB();
 		return true;
 	}
 	
-	public void setupdb() {
-		try{
-			Class.forName("com.mysql.jdbc.Driver");
-			this.connection = DriverManager.getConnection(STUDENT_DB_URL, username, password);
-			}catch(SQLException se){
-				//Handle errors for JDBC
-				se.printStackTrace();
-			}catch(Exception e){
-				//Handle errors for Class.forName
-				e.printStackTrace();
-			}finally{
-			}//end try
-	}
-	
-	public void setupstudentdb() {
-		try{
-			Class.forName("com.mysql.jdbc.Driver");
-			this.student.connection = DriverManager.getConnection(STUDENT_DB_URL, username, password);
-			}catch(SQLException se){
-				//Handle errors for JDBC
-				se.printStackTrace();
-			}catch(Exception e){
-				//Handle errors for Class.forName
-				e.printStackTrace();
-			}finally{
-			}//end try
-	}
-	
-	public void setupguestdb() {
-		try{
-		      Class.forName("com.mysql.jdbc.Driver");
-		      this.guest.connection = DriverManager.getConnection(GUEST_DB_URL, username, password);
-			}catch(SQLException se){
-		      //Handle errors for JDBC
-		      se.printStackTrace();
-			}catch(Exception e){
-		      //Handle errors for Class.forName
-		      e.printStackTrace();
-			}finally{
-			}//end try
-	}
-	
-	public void shutdowndb() {
-		try{
-			if(connection!=null)
-				connection.close();
-		}catch(SQLException se){
-			se.printStackTrace();
-		}
-	}
 	
 	public static void main(String[] args) {
 		Login l = new Login();

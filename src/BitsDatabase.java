@@ -4,41 +4,77 @@ import java.sql.*;
 
 /**
  * 
- * @author Varun
+ * @author Siddhant, Varun
  *
  */
 
 public class BitsDatabase {
+	
 	public int TOTAL_STUDENTS;
-	private Connection connect = null;
-	  private Statement statement = null;
-	  private ResultSet rs = null;
-	 public BitsDatabase(){
-	  try{
-		  final String DRIVER_CLASS = "com.mysql.jdbc.Driver"; 
-	  Class.forName(DRIVER_CLASS);
-	  }
-	  catch (ClassNotFoundException e) {
-        e.printStackTrace();
-    }
-	  }
-
-	Connection connect(){
-    // setup the connection with the DB.
-	  final String URL = "jdbc:mysql://localhost/MessData";
-	  final String USER = "root";
-	  final String PASSWORD = "1234";
-	  try{
-	  connect= DriverManager.getConnection(URL, USER, PASSWORD);
-	  }
-	  catch(SQLException e){
-		  System.out.println("ERROR: Unable to Connect to Database.");  
-	  }
-	  return connect;
-	  }
+	
+	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
+	static final String STUDENT_DB_URL = "jdbc:mysql://localhost/Students";
+	static final String GUEST_DB_URL = "jdbc:mysql://localhost/Guests";
+	
+	Student student;
+	Feedback feedback;
+	Guest guest;
+	Login login;
+	String username;
+	String password;
+	
+	public BitsDatabase() {
+		this.username = "root";
+		this.password = "J0llYS1D";
+	}
+	
+	Connection connection = null;
+	Statement statement = null;
+	ResultSet resultset = null;
+	
+	public void setupStudentDB() {
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			this.connection = DriverManager.getConnection(STUDENT_DB_URL, username, password);
+			this.statement = this.connection.createStatement();
+			}catch(SQLException se){
+				//Handle errors for JDBC
+				se.printStackTrace();
+			}catch(Exception e){
+				//Handle errors for Class.forName
+				e.printStackTrace();
+			}finally{
+			}//end try
+	}
+	
+	public void setupGuestDB() {
+		try{
+		      Class.forName("com.mysql.jdbc.Driver");
+		      this.connection = DriverManager.getConnection(GUEST_DB_URL, username, password);
+			}catch(SQLException se){
+		      //Handle errors for JDBC
+		      se.printStackTrace();
+			}catch(Exception e){
+		      //Handle errors for Class.forName
+		      e.printStackTrace();
+			}finally{
+			}//end try
+	}
+	
+	public void shutdownDB() {
+		try{
+			if(connection!=null)
+				connection.close();
+		}catch(SQLException se){
+			se.printStackTrace();
+		}
+	}
+	
+	
+/*
 	
 	void addFeedback(String Feedback) throws SQLException{
-		connect=connect();
+		connection=connection();
 		statement=connect.createStatement();
 		statement.executeUpdate("insert into Feedback values('"+Feedback+"');");
 		connect.close();
@@ -84,5 +120,5 @@ public class BitsDatabase {
 		else
 			throw new ArrayIndexOutOfBoundsException();	
 	}
-	// list of Students
+	// list of Students */
 }
