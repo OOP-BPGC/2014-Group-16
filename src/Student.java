@@ -44,7 +44,7 @@ public class Student implements MessCustomer{
 	      		
 		      if(got == false) {
 	      			System.out.println("Failed. Student Name not found.");
-	    		  	shutdownstudentdb();
+	    		  	shutdowndb();
 	      			return "";
 	      		}
 		}catch(SQLException se){
@@ -55,7 +55,7 @@ public class Student implements MessCustomer{
 		      e.printStackTrace();
 		  }finally{
 		      //finally block used to close resources
-		    	  shutdownstudentdb();
+		    	  shutdowndb();
 		   }
 		      
 		return this.idNumber;
@@ -77,7 +77,7 @@ public class Student implements MessCustomer{
 	      		
 		      if(got == false) {
 	      			System.out.println("Failed. Student ID not found.");
-	    		  	shutdownstudentdb();
+	    		  	shutdowndb();
 	      			return "";
 	      		}
 		}catch(SQLException se){
@@ -88,7 +88,7 @@ public class Student implements MessCustomer{
 		      e.printStackTrace();
 		  }finally{
 		      //finally block used to close resources
-		    	  shutdownstudentdb();
+		    	  shutdowndb();
 		   }
 		      
 		return this.name;
@@ -109,7 +109,7 @@ public class Student implements MessCustomer{
 		      }
 		      		if(got == false) {
 		      			System.out.println("Failed. Student ID not found.");
-		    		  	shutdownstudentdb();
+		    		  	shutdowndb();
 		      			return false;
 		      		}
 		   }catch(SQLException se){
@@ -120,7 +120,7 @@ public class Student implements MessCustomer{
 		      e.printStackTrace();
 		   }finally{
 		      //finally block used to close resources
-		    	  shutdownstudentdb();
+		    	  shutdowndb();
 		   }//end try
 		
 		return this.hasEaten;		
@@ -141,7 +141,7 @@ public class Student implements MessCustomer{
 		      }
 		      		if(got == false) {
 		      			System.out.println("Failed. Student ID not found.");
-		    		  	shutdownstudentdb();
+		    		  	shutdowndb();
 		      			return "";
 		      		}
 		   }catch(SQLException se){
@@ -152,7 +152,7 @@ public class Student implements MessCustomer{
 		      e.printStackTrace();
 		   }finally{
 		      //finally block used to close resources
-		    	  shutdownstudentdb();
+		    	  shutdowndb();
 		   }//end try
 		
 		return this.mess.messName;		
@@ -177,7 +177,7 @@ public class Student implements MessCustomer{
 						e.printStackTrace();
 					}finally{
 						//finally block used to close resources
-						shutdownstudentdb();
+						shutdowndb();
 					}//end try   
 		
 	}
@@ -201,7 +201,7 @@ public class Student implements MessCustomer{
 				e.printStackTrace();
 			}finally{
 				//finally block used to close resources
-				shutdownstudentdb();
+				shutdowndb();
 			}//end try   
 	}
 
@@ -224,7 +224,7 @@ public class Student implements MessCustomer{
 						e.printStackTrace();
 					}finally{
 						//finally block used to close resources
-						shutdownstudentdb();
+						shutdowndb();
 					}//end try   
 		
 	}
@@ -248,7 +248,7 @@ public class Student implements MessCustomer{
 						e.printStackTrace();
 					}finally{
 						//finally block used to close resources
-						shutdownstudentdb();
+						shutdowndb();
 					}//end try   
 	}	
 	
@@ -260,7 +260,7 @@ public class Student implements MessCustomer{
 		}
 	}	
 	
-	public void shutdownstudentdb() {
+	public void shutdowndb() {
 		try{
 			if(connection!=null)
 				connection.close();

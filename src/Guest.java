@@ -8,15 +8,13 @@ public class Guest implements MessCustomer{
 	
 	String name;
 	Feedback feedback;
-	
-	
-	
+		
 	Connection connection = null;
 	Statement statement = null;
 	ResultSet resultset = null;
 	
-	public Guest(String name) {
-		this.name = name;
+	public Guest() {
+		this.name = "";
 	}
 	
 	public void getMessInfo(String messName) {		
@@ -31,8 +29,13 @@ public class Guest implements MessCustomer{
 		}
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void shutdowndb() {
+		try{
+			if(connection!=null)
+				connection.close();
+		}catch(SQLException se){
+			se.printStackTrace();
+		}
 	}
 
 }
