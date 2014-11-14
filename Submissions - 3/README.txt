@@ -25,12 +25,13 @@ Classes: (all, partially complete)
 2. Bills
 3. BitsDatabase 
 4. Feedback
-5. Guest
-6. Login
-7. Mess
-8. MessAdmin
-9. MessMenu
-10. Student
+5. FoodStock
+6. Guest
+7. Login
+8. Mess
+9. MessAdmin
+10. MessMenu
+11. Student
 
 Enums: (complete)
 1. Day
