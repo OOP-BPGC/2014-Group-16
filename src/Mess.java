@@ -6,4 +6,8 @@ public class Mess {
 	Bills price;
 	Accounts account;
 	MessMenu menu;
+	
+	public Mess() {
+		messName = "A";
+	}
 }

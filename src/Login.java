@@ -5,11 +5,11 @@ import java.sql.SQLException;
 
 public class Login {
 	boolean loginStatus;
-	Student student;
+	Student student = new Student();
 	Guest guest;
 	
-	String username;
-	String password;
+	String username = "root";
+	String password = "J0llYS1D";
 	
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
 	static final String STUDENT_DB_URL = "jdbc:mysql://localhost/Students";
@@ -23,7 +23,36 @@ public class Login {
 		
 		//set this.student to an object corresponding to idNumber in student database
 		//Database - Sr.No, ID, Name, Mess, HasEaten
-		this.student.idNumber = idNumber;
+			this.student.idNumber = idNumber;
+			setupstudentdb(); 
+			this.student.hasEaten = this.student.getHasEaten(idNumber);			
+			
+			setupstudentdb();
+			this.student.mess.messName = this.student.getMessChosen(idNumber);
+			
+			if(!this.student.mess.messName.equals(messName) || this.student.hasEaten == true) {
+				student.checkinStatus = false;
+				return false;
+			}
+			else {
+				student.checkinStatus = true;
+				
+				setupstudentdb();				
+				this.student.setHasEaten(true,idNumber);
+				
+				return true;
+			}			
+	}
+	
+	boolean doGuestCheckIn(String name) {
+		this.guest.name = name;
+		
+		setupguestdb();
+		
+		return true;
+	}
+	
+	public void setupstudentdb() {
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
 			this.student.connection = DriverManager.getConnection(STUDENT_DB_URL, username, password);
@@ -34,33 +63,10 @@ public class Login {
 				//Handle errors for Class.forName
 				e.printStackTrace();
 			}finally{
-				try{
-					if(this.student.connection!=null)
-						this.student.connection.close();
-				}catch(SQLException se){
-					se.printStackTrace();
-				}//end finally try
 			}//end try
-	 
-		
-			//Get HasEaten for student
-			this.student.getHasEaten(idNumber);
-			this.student.getMessChosen(idNumber);
-		
-			if (student.hasEaten == true && student.mess.messName == messName) {
-				student.checkinStatus = false;
-				return false;
-			}
-			else {
-				student.checkinStatus = true;
-				this.student.setHasEaten(true,idNumber);
-				return true;
-		}			
 	}
 	
-	boolean doGuestCheckIn(String name) {
-		this.guest.name = name;
-		
+	public void setupguestdb() {
 		try{
 		      Class.forName("com.mysql.jdbc.Driver");
 		      this.guest.connection = DriverManager.getConnection(GUEST_DB_URL, username, password);
@@ -71,17 +77,14 @@ public class Login {
 		      //Handle errors for Class.forName
 		      e.printStackTrace();
 			}finally{
-				try{
-		         if(this.guest.connection!=null)
-		            this.guest.connection.close();
-				}catch(SQLException se){
-		         se.printStackTrace();
-				}//end finally try
 			}//end try
-		
-		
-		return true;
 	}
 	
-	
+	public static void main(String[] args) {
+		Login l = new Login();
+		
+		System.out.println("Check in " + l.doStudentCheckIn("2012A3PS200G", "A"));
+		System.out.println("");
+		System.out.println("Check in " + l.doStudentCheckIn("2012A3PS200G", "A"));
+	}
 }
