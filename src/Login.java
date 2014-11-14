@@ -9,7 +9,7 @@ public class Login {
 	Guest guest;
 	
 	String username = "root";
-	String password = "J0llYS1D";
+	String password = "12345";
 	
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
 	static final String STUDENT_DB_URL = "jdbc:mysql://localhost/Students";
@@ -22,7 +22,7 @@ public class Login {
 	boolean doStudentCheckIn (String idNumber,String messName) {
 		
 		//set this.student to an object corresponding to idNumber in student database
-		//Database - Sr.No, ID, Name, Mess, HasEaten
+		//Database - Sr.No, ID, Name, Mess, HasEaten, Password
 			this.student.idNumber = idNumber;
 			setupstudentdb(); 
 			this.student.hasEaten = this.student.getHasEaten(idNumber);			
