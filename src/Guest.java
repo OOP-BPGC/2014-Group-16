@@ -2,6 +2,11 @@ package src;
 
 import java.sql.*;
 
+/**
+ * 
+ * @author Siddhant
+ *
+ */
 public class Guest implements MessCustomer{
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	static final String GUEST_DB_URL = "jdbc:mysql://localhost/Guests";
