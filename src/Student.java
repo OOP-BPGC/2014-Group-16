@@ -25,70 +25,137 @@ public class Student implements MessCustomer{
 	public Student() {
 		this.name = "";
 		this.idNumber = "";
+		this.hasEaten = false;
 	}
-	
-//	public Student(String idNumber) {
-//		this.setIdNumber(idNumber);
-//		//get other details from database
-//		
-//		//STEP1: CONNECT TO DATABASE
-//		try{
-//		      //Register JDBC driver
-//		      Class.forName("com.mysql.jdbc.Driver");
-//		      //STEP 3: Open a connection
-//		      //System.out.println("Connecting to a selected database...");
-//		      connection = DriverManager.getConnection(STUDENT_DB_URL, username, password);
-		      //System.out.println("Connected database successfully...");
-		      
-		    //STEP 4: Execute a query/
-		      //System.out.println("Creating statement...");
-		      //statement = connection.createStatement();
-
-		      //String sql = "SELECT name, mess FROM Students";
-		      //resultset = statement.executeQuery(sql);
-		      
-		    //STEP 5: Extract data from result set
-		      //while(resultset.next()){
-		         //Retrieve by column name
-		        // this.name = resultset.getString("name");
-		        // this.mess.messName = resultset.getString("mess");
-		      //}
-		   //}catch(SQLException se){
-		      //Handle errors for JDBC
-		     // se.printStackTrace();
-		   //}catch(Exception e){
-		      //Handle errors for Class.forName
-		     // e.printStackTrace();
-		   //}finally{
-		      //finally block used to close resources
-		     // try{
-		       //  if(connection!=null)
-	//	            connection.close();
-		      //}catch(SQLException se){
-		        // se.printStackTrace();
-		      //}//end finally try
-		   //}//end try
-	//}
-	
-	//public Student(String name, String idNumber,) {
-		//this.name = name;
-		//this.setIdNumber(idNumber);
-	//}
 	
 	public String getIdNumber(String name) {
-		return idNumber;
-	}
-
-	public void setIdNumber(String idNumber) {
-		this.idNumber = idNumber;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+		boolean got = false;
+		try{
+		      statement = connection.createStatement();
+		      
+		      String sql = "SELECT idno FROM Students WHERE name = '" + name + "'";
+		      resultset = statement.executeQuery(sql);
+		      
+		      while(resultset.next()){
+	    		  //Retrieve by column name
+	    		  this.idNumber = resultset.getString("idno");
+	    		  got = true;
+		      }
+	      		
+		      if(got == false) {
+	      			System.out.println("Failed. Student Name not found.");
+	    		  	shutdownstudentdb();
+	      			return "";
+	      		}
+		}catch(SQLException se){
+		      //Handle errors for JDBC
+		      se.printStackTrace();
+		 }catch(Exception e){
+		      //Handle errors for Class.forName
+		      e.printStackTrace();
+		  }finally{
+		      //finally block used to close resources
+		    	  shutdownstudentdb();
+		   }
+		      
+		return this.idNumber;
 	}
 	
 	public String getName(String idNumber) {
+		boolean got = false;
+		try{
+		      statement = connection.createStatement();
+		      
+		      String sql = "SELECT name FROM Students WHERE IDNO = '" + idNumber + "'";
+		      resultset = statement.executeQuery(sql);
+		      
+		      while(resultset.next()){
+	    		  //Retrieve by column name
+	    		  this.name = resultset.getString("name");
+	    		  got = true;
+		      }
+	      		
+		      if(got == false) {
+	      			System.out.println("Failed. Student ID not found.");
+	    		  	shutdownstudentdb();
+	      			return "";
+	      		}
+		}catch(SQLException se){
+		      //Handle errors for JDBC
+		      se.printStackTrace();
+		 }catch(Exception e){
+		      //Handle errors for Class.forName
+		      e.printStackTrace();
+		  }finally{
+		      //finally block used to close resources
+		    	  shutdownstudentdb();
+		   }
+		      
 		return this.name;
+	}
+	
+	public boolean getHasEaten(String idNumber){	
+		boolean got = false;
+		try{
+		      statement = connection.createStatement();
+		      
+		      String sql = "SELECT haseaten FROM Students WHERE IDNO = '" + idNumber + "'";
+		      resultset = statement.executeQuery(sql);
+		      
+		      while(resultset.next()){
+		    		  //Retrieve by column name
+		    		  this.hasEaten = resultset.getBoolean("haseaten");
+		    		  got = true;
+		      }
+		      		if(got == false) {
+		      			System.out.println("Failed. Student ID not found.");
+		    		  	shutdownstudentdb();
+		      			return false;
+		      		}
+		   }catch(SQLException se){
+		      //Handle errors for JDBC
+		      se.printStackTrace();
+		   }catch(Exception e){
+		      //Handle errors for Class.forName
+		      e.printStackTrace();
+		   }finally{
+		      //finally block used to close resources
+		    	  shutdownstudentdb();
+		   }//end try
+		
+		return this.hasEaten;		
+	}
+	
+	public String getMessChosen(String idNumber) {
+		boolean got = false;
+		try{
+		      statement = connection.createStatement();
+		      
+		      String sql = "SELECT mess FROM Students WHERE IDNO = '" + idNumber + "'";
+		      resultset = statement.executeQuery(sql);
+		      
+		      while(resultset.next()){
+		    		  //Retrieve by column name
+		    		  this.mess.messName = resultset.getString("mess");
+		    		  got = true;
+		      }
+		      		if(got == false) {
+		      			System.out.println("Failed. Student ID not found.");
+		    		  	shutdownstudentdb();
+		      			return "";
+		      		}
+		   }catch(SQLException se){
+		      //Handle errors for JDBC
+		      se.printStackTrace();
+		   }catch(Exception e){
+		      //Handle errors for Class.forName
+		      e.printStackTrace();
+		   }finally{
+		      //finally block used to close resources
+		    	  shutdownstudentdb();
+		   }//end try
+		
+		return this.mess.messName;		
 	}
 	
 	public void setHasEaten(boolean status, String idNumber) {
@@ -115,73 +182,51 @@ public class Student implements MessCustomer{
 		
 	}
 	
-	public boolean getHasEaten(String idNumber){	
-		try{
+	public void setIdNumber(String idNumber) {
+		this.idNumber = idNumber;
+		
+		//copy to database
+		try{  
+			//Execute Query
 		      statement = connection.createStatement();
 		      
-		      String sql = "SELECT haseaten FROM Students WHERE IDNO = '" + idNumber + "'";
-		      resultset = statement.executeQuery(sql);
-		      
-		      if(resultset.next()) {
-		    	  while(resultset.next()){
-		    		  //Retrieve by column name
-		    		  this.hasEaten = resultset.getBoolean("haseaten");
-		      }
-		      }
-		    	  else {
-		    		  System.out.println("Failed. Student ID not found.");
-		    		  shutdownstudentdb();
-		      		return false;
-		    	  }
-		   }catch(SQLException se){
-		      //Handle errors for JDBC
-		      se.printStackTrace();
-		   }catch(Exception e){
-		      //Handle errors for Class.forName
-		      e.printStackTrace();
-		   }finally{
-		      //finally block used to close resources
-		    	  shutdownstudentdb();
-		   }//end try
-		
-		return this.hasEaten;
-		
-	}
-	
-	public void giveFeedback(String feedback) {
-		try {
-			Feedback.giveFeedback(feedback);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public String getMessChosen(String idNumber) {
-		try{
-		      statement = connection.createStatement();
-		      
-		      String sql = "SELECT mess FROM Students WHERE idno = '" + idNumber + "'";
-		      resultset = statement.executeQuery(sql);
-		      
-		      while(resultset.next()){
-			         this.mess.messName = resultset.getString("mess");
-			  }
-		      
-		      if(this.mess.messName.length() == 0)
-		    	  return "";
-		      
+		      String sql = "UPDATE Students " + "SET idno = '" + idNumber + "'" + " WHERE id = '" + idNumber + "'";
+		      statement.executeUpdate(sql);
 		      
 			}catch(SQLException se){
-		      //Handle errors for JDBC
-		      se.printStackTrace();
+				//Handle errors for JDBC
+				se.printStackTrace();
 			}catch(Exception e){
-		      //Handle errors for Class.forName
-		      e.printStackTrace();
+				//Handle errors for Class.forName
+				e.printStackTrace();
 			}finally{
+				//finally block used to close resources
 				shutdownstudentdb();
-		  }//end try
-		      
-		return mess.messName;
+			}//end try   
+	}
+
+	public void setName(String name, String idNumber) {
+		this.name = name;
+		
+		//copy to database
+				try{  
+					//Execute Query
+				      statement = connection.createStatement();
+				      
+				      String sql = "UPDATE Students " + "SET name = '" + name + "'" + " WHERE id = '" + idNumber + "'";
+				      statement.executeUpdate(sql);
+				      
+					}catch(SQLException se){
+						//Handle errors for JDBC
+						se.printStackTrace();
+					}catch(Exception e){
+						//Handle errors for Class.forName
+						e.printStackTrace();
+					}finally{
+						//finally block used to close resources
+						shutdownstudentdb();
+					}//end try   
+		
 	}
 	
 	public void setMessChosen(String mess) {
@@ -205,7 +250,15 @@ public class Student implements MessCustomer{
 						//finally block used to close resources
 						shutdownstudentdb();
 					}//end try   
-	}
+	}	
+	
+	public void giveFeedback(String feedback) {
+		try {
+			Feedback.giveFeedback(feedback);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}	
 	
 	public void shutdownstudentdb() {
 		try{

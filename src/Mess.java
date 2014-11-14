@@ -8,6 +8,6 @@ public class Mess {
 	MessMenu menu;
 	
 	public Mess() {
-		messName = "A";
+		messName = "";
 	}
 }

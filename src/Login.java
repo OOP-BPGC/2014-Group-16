@@ -9,7 +9,7 @@ public class Login {
 	Guest guest;
 	
 	String username = "root";
-	String password = "12345";
+	String password = "J0llYS1D";
 	
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
 	static final String STUDENT_DB_URL = "jdbc:mysql://localhost/Students";
@@ -35,20 +35,16 @@ public class Login {
 				return false;
 			}
 			else {
-				student.checkinStatus = true;
-				
+				student.checkinStatus = true;				
 				setupstudentdb();				
 				this.student.setHasEaten(true,idNumber);
-				
 				return true;
 			}			
 	}
 	
 	boolean doGuestCheckIn(String name) {
-		this.guest.name = name;
-		
+		this.guest.name = name;	
 		setupguestdb();
-		
 		return true;
 	}
 	
@@ -83,7 +79,7 @@ public class Login {
 	public static void main(String[] args) {
 		Login l = new Login();
 		
-		System.out.println("Check in " + l.doStudentCheckIn("2012A3PS200G", "A"));
+		System.out.println("Check in " + l.doStudentCheckIn("2012A3PS208G", "A"));
 		System.out.println("");
 		System.out.println("Check in " + l.doStudentCheckIn("2012A3PS200G", "A"));
 	}
