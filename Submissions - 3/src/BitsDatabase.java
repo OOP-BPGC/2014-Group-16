@@ -15,17 +15,14 @@ public class BitsDatabase {
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
 	static final String STUDENT_DB_URL = "jdbc:mysql://localhost/Students";
 	static final String GUEST_DB_URL = "jdbc:mysql://localhost/Guests";
+	static final String FEEDBACK_DB_URL = "jdbc:mysql://localhost/Feedback";
 	
-	Student student;
-	Feedback feedback;
-	Guest guest;
-	Login login;
 	String username;
 	String password;
 	
-	public BitsDatabase() {
-		this.username = "root";
-		this.password = "J0llYS1D";
+	public BitsDatabase(String username, String password) {
+		this.username = username;
+		this.password = password;
 	}
 	
 	Connection connection = null;
@@ -51,6 +48,7 @@ public class BitsDatabase {
 		try{
 		      Class.forName("com.mysql.jdbc.Driver");
 		      this.connection = DriverManager.getConnection(GUEST_DB_URL, username, password);
+		      this.statement = this.connection.createStatement();
 			}catch(SQLException se){
 		      //Handle errors for JDBC
 		      se.printStackTrace();
@@ -69,7 +67,6 @@ public class BitsDatabase {
 			se.printStackTrace();
 		}
 	}
-	
 	
 /*
 	

@@ -11,9 +11,9 @@ public final class Feedback {
 	static int total=0;
 	static String []studentFeedback;
 	static String feedback;
-	static BitsDatabase db=new BitsDatabase();
+	static BitsDatabase db=new BitsDatabase("root","J0llYS1D");
 
-	
+	/*
 	static String getFeedback(int i) throws Exception{
 		//called by MessAdmin to view a particular Feedback; For GUI purposes
 		feedback=db.getFeedback(i);
@@ -25,17 +25,18 @@ public final class Feedback {
 		studentFeedback=db.getFeedback();
 		return studentFeedback;	
 	}
-	
+	*/
 	static void giveFeedback(String Feedback) throws SQLException{
 		//invoked by student to give Feedback
-		db.addFeedback(Feedback);
+		//db.addFeedback(Feedback);
 		
 	}
+	/*
 	static void clearFeedback() throws SQLException{
 		//clear the feedback array, after MessAdmin views it;
 		db.clearFeedback();
 		for(int i=0;i<total;i++){
 		studentFeedback[i]=null;	
 		}
-	}
+	}*/
 }

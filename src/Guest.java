@@ -8,12 +8,11 @@ import java.sql.*;
  *
  */
 public class Guest implements MessCustomer{
-	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-	static final String GUEST_DB_URL = "jdbc:mysql://localhost/Guests";
 	
 	String name;
 	Feedback feedback;
-		
+	BitsDatabase bitsdatabase = new BitsDatabase("root","J0llYS1D");
+	
 	Connection connection = null;
 	Statement statement = null;
 	ResultSet resultset = null;
@@ -24,6 +23,30 @@ public class Guest implements MessCustomer{
 	
 	public void getMessInfo(String messName) {		
 		
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+		
+		//copy to database
+		try{  
+			//Execute Query
+			bitsdatabase.setupGuestDB();
+		      
+			String sql = "INSERT INTO Guests (name) VALUES '" + name + "'";
+		      bitsdatabase.statement.executeUpdate(sql);
+		      
+			}catch(SQLException se){
+				//Handle errors for JDBC
+				se.printStackTrace();
+			}catch(Exception e){
+				//Handle errors for Class.forName
+				e.printStackTrace();
+			}finally{
+				//finally block used to close resources
+				bitsdatabase.shutdownDB();
+			}//end try   
+
 	}
 	
 	public void giveFeedback(String feedback) {		

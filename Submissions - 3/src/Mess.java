@@ -9,5 +9,6 @@ public class Mess {
 	
 	public Mess() {
 		messName = "";
+		contractorName = "";
 	}
 }

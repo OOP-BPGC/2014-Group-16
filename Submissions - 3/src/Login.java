@@ -10,11 +10,8 @@ import java.sql.SQLException;
 public class Login {
 	
 	Student student = new Student();
-	Guest guest;
-	BitsDatabase bitsdatabase = new BitsDatabase();
-	
-	String username = "root";
-	String password = "12345";
+	Guest guest = new Guest();
+	BitsDatabase bitsdatabase = new BitsDatabase("root","J0llYS1D");
 	
 	String checkusr = "";
 	String checkpass = "";

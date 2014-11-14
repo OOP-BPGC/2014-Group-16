@@ -7,9 +7,6 @@ import java.sql.*;
  *
  */
 public class Student implements MessCustomer{
-	
-	//static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-	//tatic final String STUDENT_DB_URL = "jdbc:mysql://localhost/Students";
 
 	String name;
 	String password;
@@ -21,7 +18,7 @@ public class Student implements MessCustomer{
 	Mess mess = new Mess();
 	Accounts account;
 	Feedback feedback;
-	BitsDatabase bitsdatabase = new BitsDatabase();
+	BitsDatabase bitsdatabase = new BitsDatabase("root","J0llYS1D");
 	
 	boolean authStatus;
 	boolean checkinStatus;
