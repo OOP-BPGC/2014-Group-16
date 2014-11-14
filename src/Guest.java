@@ -19,7 +19,7 @@ public class Guest implements MessCustomer{
 		this.name = name;
 	}
 	
-	public void getMessInfo() {		
+	public void getMessInfo(String messName) {		
 		
 	}
 	

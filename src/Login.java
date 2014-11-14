@@ -19,7 +19,7 @@ public class Login {
 		
 	}
 	
-	boolean doStudentCheckIn (String idNumber) {
+	boolean doStudentCheckIn (String idNumber,String messName) {
 		
 		//set this.student to an object corresponding to idNumber in student database
 		//Database - Sr.No, ID, Name, Mess, HasEaten
@@ -45,8 +45,9 @@ public class Login {
 		
 			//Get HasEaten for student
 			this.student.getHasEaten(idNumber);
+			this.student.getMessChosen(idNumber);
 		
-			if (student.hasEaten == true) {
+			if (student.hasEaten == true && student.mess.messName == messName) {
 				student.checkinStatus = false;
 				return false;
 			}

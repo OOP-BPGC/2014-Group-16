@@ -70,7 +70,7 @@ public class Student implements MessCustomer{
 		//this.setIdNumber(idNumber);
 	//}
 	
-	public String getIdNumber() {
+	public String getIdNumber(String name) {
 		return idNumber;
 	}
 
@@ -82,7 +82,7 @@ public class Student implements MessCustomer{
 		this.name = name;
 	}
 	
-	public String getName() {
+	public String getName(String idNumber) {
 		return this.name;
 	}
 	
@@ -119,7 +119,6 @@ public class Student implements MessCustomer{
 	}
 	
 	public boolean getHasEaten(String idNumber){	
-		//STEP1: CONNECT TO DATABASE
 		try{
 		      statement = connection.createStatement();
 		      
@@ -149,7 +148,7 @@ public class Student implements MessCustomer{
 		      }//end finally try
 		   }//end try
 		
-		return hasEaten;
+		return this.hasEaten;
 		
 	}
 	
@@ -161,14 +160,68 @@ public class Student implements MessCustomer{
 		}
 	}
 	
-	public String getMessChosen() {
+	public String getMessChosen(String idNumber) {
+		try{
+		      statement = connection.createStatement();
+		      
+		      String sql = "SELECT mess FROM Students WHERE id = " + idNumber;
+		      resultset = statement.executeQuery(sql);
+		      
+		      while(resultset.next()){
+			         this.mess.messName = resultset.getString("mess");
+			         connection.close();
+			         statement.close();
+			         resultset.close();
+			      }
+			}catch(SQLException se){
+		      //Handle errors for JDBC
+		      se.printStackTrace();
+			}catch(Exception e){
+		      //Handle errors for Class.forName
+		      e.printStackTrace();
+			}finally{
+				//finally block used to close resources
+				try{
+					if(connection!=null)
+						connection.close();
+				}catch(SQLException se){
+					se.printStackTrace();
+				}//end finally try
+		  }//end try
+		      
 		return mess.messName;
 	}
 	
 	public void setMessChosen(String mess) {
 		this.mess.messName = mess;
+		
+		//copy to database
+				try{  
+					//Execute Query
+				      statement = connection.createStatement();
+				      
+				      String sql = "UPDATE Students " + "SET mess = " + mess + " WHERE id = " + idNumber;
+				      resultset = statement.executeQuery(sql);
+				      
+				      resultset.close();
+				      statement.close();
+				      connection.close();
+					}catch(SQLException se){
+						//Handle errors for JDBC
+						se.printStackTrace();
+					}catch(Exception e){
+						//Handle errors for Class.forName
+						e.printStackTrace();
+					}finally{
+						//finally block used to close resources
+						try{
+							if(connection!=null)
+								connection.close();
+						}catch(SQLException se){
+							se.printStackTrace();
+						}//end finally try
+					}//end try   
 	}
-	
 	
 	
 	
