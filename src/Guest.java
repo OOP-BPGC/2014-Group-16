@@ -24,7 +24,11 @@ public class Guest implements MessCustomer{
 	}
 	
 	public void giveFeedback(String feedback) {		
-
+		try {
+			Feedback.giveFeedback(feedback);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void setName(String name) {

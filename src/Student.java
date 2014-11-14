@@ -86,11 +86,10 @@ public class Student implements MessCustomer{
 		return this.name;
 	}
 	
-	public void setHasEaten(boolean status) {
+	public void setHasEaten(boolean status, String idNumber) {
 		this.hasEaten = status;
 		
 		//copy to database
-		//STEP1: CONNECT TO DATABASE
 				try{  
 					//Execute Query
 				      statement = connection.createStatement();
@@ -119,7 +118,7 @@ public class Student implements MessCustomer{
 		
 	}
 	
-	public boolean getHasEaten(){	
+	public boolean getHasEaten(String idNumber){	
 		//STEP1: CONNECT TO DATABASE
 		try{
 		      statement = connection.createStatement();
@@ -127,7 +126,6 @@ public class Student implements MessCustomer{
 		      String sql = "SELECT haseaten FROM Students WHERE id = " + idNumber;
 		      resultset = statement.executeQuery(sql);
 		      
-		    //STEP 5: Extract data from result set
 		      while(resultset.next()){
 		         //Retrieve by column name
 		         this.hasEaten = resultset.getBoolean("haseaten");

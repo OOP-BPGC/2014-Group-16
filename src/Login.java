@@ -23,47 +23,61 @@ public class Login {
 		
 		//set this.student to an object corresponding to idNumber in student database
 		//Database - Sr.No, ID, Name, Mess, HasEaten
-	this.student.idNumber = idNumber;
-	try{
-	      //STEP 2: Register JDBC driver
-	      Class.forName("com.mysql.jdbc.Driver");
-	      //STEP 3: Open a connection
-	      //System.out.println("Connecting to a selected database...");
-	      this.student.connection = DriverManager.getConnection(STUDENT_DB_URL, username, password);
-	      //System.out.println("Connected database successfully...");
-		}catch(SQLException se){
-	      //Handle errors for JDBC
-	      se.printStackTrace();
-		}catch(Exception e){
-	      //Handle errors for Class.forName
-	      e.printStackTrace();
-		}finally{
-	      //finally block used to close resources
-	      try{
-	         if(this.student.connection!=null)
-	            this.student.connection.close();
-	      }catch(SQLException se){
-	         se.printStackTrace();
-	      }//end finally try
-		}//end try
+		this.student.idNumber = idNumber;
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			this.student.connection = DriverManager.getConnection(STUDENT_DB_URL, username, password);
+			}catch(SQLException se){
+				//Handle errors for JDBC
+				se.printStackTrace();
+			}catch(Exception e){
+				//Handle errors for Class.forName
+				e.printStackTrace();
+			}finally{
+				try{
+					if(this.student.connection!=null)
+						this.student.connection.close();
+				}catch(SQLException se){
+					se.printStackTrace();
+				}//end finally try
+			}//end try
 	 
 		
-		//Get HasEaten for student
-		this.student.getHasEaten();
+			//Get HasEaten for student
+			this.student.getHasEaten(idNumber);
 		
-		if (student.hasEaten == true) {
-			student.checkinStatus = false;
-			return false;
-		}
-		else {
-			student.checkinStatus = true;
-			this.student.setHasEaten(true);
-			return true;
+			if (student.hasEaten == true) {
+				student.checkinStatus = false;
+				return false;
+			}
+			else {
+				student.checkinStatus = true;
+				this.student.setHasEaten(true,idNumber);
+				return true;
 		}			
 	}
 	
 	boolean doGuestCheckIn(String name) {
 		this.guest.name = name;
+		
+		try{
+		      Class.forName("com.mysql.jdbc.Driver");
+		      this.guest.connection = DriverManager.getConnection(GUEST_DB_URL, username, password);
+			}catch(SQLException se){
+		      //Handle errors for JDBC
+		      se.printStackTrace();
+			}catch(Exception e){
+		      //Handle errors for Class.forName
+		      e.printStackTrace();
+			}finally{
+				try{
+		         if(this.guest.connection!=null)
+		            this.guest.connection.close();
+				}catch(SQLException se){
+		         se.printStackTrace();
+				}//end finally try
+			}//end try
+		
 		
 		return true;
 	}
