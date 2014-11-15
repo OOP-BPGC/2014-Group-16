@@ -254,7 +254,7 @@ public class MessMenu {
 		    		  meal[4] = bitsdatabase.resultset.getString("beverage");
 		    		  meal[5] = bitsdatabase.resultset.getString("sweet");
 		    		  got = true;
-		    		  //System.out.println(cmeal + " " + meal[0] + " " + meal[1] + " " + meal[2] + " " + meal[3] + " " + meal [4] + " " + meal[5]); 
+		    		  System.out.println(cmeal + " " + meal[0] + " " + meal[1] + " " + meal[2] + " " + meal[3] + " " + meal [4] + " " + meal[5]); 
 			      }
 		      		
 			      if(got == false) {
@@ -285,19 +285,14 @@ public class MessMenu {
 		 String ctime = bitsdatabase.getCurrentTime();
 		 int i = Integer.parseInt(ctime);
 		 
-		 if(i>=Integer.parseInt(this.mess.dinner_time[0]) && i<Integer.parseInt(this.mess.breakfast_time[0])) 
-			 cmeal = "Breakfast";
-		 else if (i>=Integer.parseInt(this.mess.breakfast_time[0]) && i<Integer.parseInt(this.mess.lunch_time[0]))
+		 if (i>=Integer.parseInt(this.mess.breakfast_time[0]) && i<Integer.parseInt(this.mess.lunch_time[0]))
 			 cmeal = "Lunch";
 		 else if (i>=Integer.parseInt(this.mess.lunch_time[0]) && i<Integer.parseInt(this.mess.snack_time[0]))
 			 cmeal = "Snacks";
 		 else if (i>=Integer.parseInt(this.mess.snack_time[0]) && i<Integer.parseInt(this.mess.dinner_time[0]))
 			 cmeal = "Dinner";
-		 else{
-			 cmeal = "";
-			 System.out.println("Failed to get next Meal."); //throw custom Exeption here
-			 return meal;
-		 }
+		 else
+			 cmeal = "Breakfast";
 		 
 		 try{
 				bitsdatabase.setupMessDB(messName);
@@ -318,7 +313,7 @@ public class MessMenu {
 			      }
 		      		
 			      if(got == false) {
-		      			//System.out.println(cmeal + " details of " + cday + " for Mess " + messName + " do not exist in it's database");
+		      			System.out.println(cmeal + " details of " + cday + " for Mess " + messName + " do not exist in it's database");
 		      			bitsdatabase.shutdownDB();
 		      			return meal;
 		      		}
@@ -335,9 +330,9 @@ public class MessMenu {
 		return meal;
 	 }
 	 
-
 	 public static void main(String args[]) {
 		 MessMenu m = new MessMenu();
+		 //m.getCurrentMeal("A");
 		 m.getNextMeal("A");
 	 }
 }

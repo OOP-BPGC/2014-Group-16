@@ -45,17 +45,13 @@ public class Guest implements MessCustomer{
 			}finally{
 				//finally block used to close resources
 				bitsdatabase.shutdownDB();
-			}//end try   
-
+			}//end try   		
 	}
 	
-	public void giveFeedback(String feedback) {		
-		try {
-			Feedback.giveFeedback(feedback);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
+	
+	public void giveFeedback(String comments) {		
+			feedback.addGuestFeedback(name, comments);			
+		} 
 
 	public void shutdowndb() {
 		try{

@@ -125,6 +125,21 @@ public class BitsDatabase {
 		}
 	}
 	
+	public void setupFeedbackDB() {
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			this.connection = DriverManager.getConnection(FEEDBACK_DB_URL, username, password);
+			this.statement = this.connection.createStatement();
+			}catch(SQLException se){
+				//Handle errors for JDBC
+				se.printStackTrace();
+			}catch(Exception e){
+				//Handle errors for Class.forName
+				e.printStackTrace();
+			}finally{
+			}//end try
+	}
+	
 	public void shutdownDB() {
 		try{
 			if(connection!=null)

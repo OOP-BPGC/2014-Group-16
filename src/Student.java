@@ -243,12 +243,12 @@ public class Student implements MessCustomer{
 		
 	}	
 	
-	public void giveFeedback(String feedback) {
-		try {
-			Feedback.giveFeedback(feedback);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	public void giveFeedback(String comments, boolean anonymous) {
+		
+		if(anonymous==true)
+			feedback.addStudentFeedback("",comments);
+		else
+			feedback.addStudentFeedback(this.name,comments);
 	}	
 	
 	

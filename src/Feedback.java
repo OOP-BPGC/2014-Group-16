@@ -8,10 +8,11 @@ import java.sql.SQLException;
  *
  */
 public final class Feedback {  
-	static int total=0;
-	static String []studentFeedback;
-	static String feedback;
-	static BitsDatabase db=new BitsDatabase("root","J0llYS1D");
+	//static int total=0;
+	//static String []studentFeedback;
+	//static String feedback;
+	
+	BitsDatabase bitsdatabase = new BitsDatabase("root","J0llYS1D");
 
 	/*
 	static String getFeedback(int i) throws Exception{
@@ -25,12 +26,47 @@ public final class Feedback {
 		studentFeedback=db.getFeedback();
 		return studentFeedback;	
 	}
+	
+	
+	
 	*/
-	static void giveFeedback(String Feedback) throws SQLException{
-		//invoked by student to give Feedback
-		//db.addFeedback(Feedback);
-		
+	
+	void addGuestFeedback(String name, String comments) {
+		try{
+			bitsdatabase.setupFeedbackDB();
+			
+			String sql = "INSERT INTO GuestFeedback VALUES (" + name + ", " + comments + ")";
+			bitsdatabase.statement.executeUpdate(sql);
+		}catch(SQLException se){
+			//Handle errors for JDBC
+			se.printStackTrace();
+		}catch(Exception e){
+			//Handle errors for Class.forName
+			e.printStackTrace();
+		}finally{
+			//finally block used to close resources
+			bitsdatabase.shutdownDB();
+		}
 	}
+	
+	void addStudentFeedback(String name, String comments) {
+		try{
+			bitsdatabase.setupFeedbackDB();
+			
+			String sql = "INSERT INTO StudentFeedback VALUES (" + name + ", " + comments + ")";
+			bitsdatabase.statement.executeUpdate(sql);
+		}catch(SQLException se){
+			//Handle errors for JDBC
+			se.printStackTrace();
+		}catch(Exception e){
+			//Handle errors for Class.forName
+			e.printStackTrace();
+		}finally{
+			//finally block used to close resources
+			bitsdatabase.shutdownDB();
+		}
+	}
+	
 	/*
 	static void clearFeedback() throws SQLException{
 		//clear the feedback array, after MessAdmin views it;

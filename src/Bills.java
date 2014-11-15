@@ -1,6 +1,7 @@
 package src;
 
 public class Bills {
+	
 	long breakfastPrice;
 	long lunchPrice;
 	long snackPrice;
