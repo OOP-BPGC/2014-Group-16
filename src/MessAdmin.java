@@ -15,7 +15,7 @@ public class MessAdmin implements MessEmployee{
 	Mess mess;
 
 	 public MessAdmin() {
-		 bitsdatabase = new BitsDatabase("root", "J0llYS1D");
+		 bitsdatabase = new BitsDatabase();
 		 student = new Student();
 		 mess = new Mess();
 	 }

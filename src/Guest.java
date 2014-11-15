@@ -18,7 +18,7 @@ public class Guest {
 	public Guest() {
 		this.name = "";
 		feedback = new Feedback();
-		bitsdatabase = new BitsDatabase("root","J0llYS1D");
+		bitsdatabase = new BitsDatabase();
 	}
 	
 	public void getMessInfo(String messName) {		

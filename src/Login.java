@@ -22,7 +22,7 @@ public class Login {
 		student = new Student();
 		guest = new Guest();
 		messadmin = new MessAdmin();
-		bitsdatabase = new BitsDatabase("root","J0llYS1D");
+		bitsdatabase = new BitsDatabase();
 		checkusr = "";
 		checkpass = "";
 	}

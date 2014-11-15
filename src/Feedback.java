@@ -15,7 +15,7 @@ public final class Feedback {
 	BitsDatabase bitsdatabase;
 	
 	public Feedback() {
-	bitsdatabase = new BitsDatabase("root","J0llYS1D");
+	bitsdatabase = new BitsDatabase();
 	}
 	/*
 	static String getFeedback(int i) throws Exception{

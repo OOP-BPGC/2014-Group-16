@@ -21,17 +21,18 @@ public class BitsDatabase {
 	static final String AMESS_DB_URL = "jdbc:mysql://localhost/AMess";
 	static final String CMESS_DB_URL = "jdbc:mysql://localhost/CMess";
 	
-	String username;
-	String password;
-	
-	public BitsDatabase(String username, String password) {
-		this.username = username;
-		this.password = password;
-	}
+	String username = "root";
+	String password = "J0llYS1D";
 	
 	Connection connection = null;
 	Statement statement = null;
 	ResultSet resultset = null;
+	
+	public BitsDatabase() {
+		connection = null;
+		statement = null;
+		resultset = null;
+	}
 	
 	String getCurrentDay() {
 		 SimpleDateFormat sdf = new SimpleDateFormat("EEE");

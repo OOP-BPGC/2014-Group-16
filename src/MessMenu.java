@@ -19,7 +19,7 @@ import java.sql.*;
 
 public class MessMenu {
 	
-	BitsDatabase bitsdatabase = new BitsDatabase("root","J0llYS1D");
+	BitsDatabase bitsdatabase = new BitsDatabase();
 	Mess mess = new Mess();
 	 
 	 String[] getBreakfast(String day, String messName) {

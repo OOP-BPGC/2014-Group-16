@@ -31,7 +31,7 @@ public class Student {
 		this.authStatus = false;
 		this.checkinStatus = false;
 		mess = new Mess();
-		bitsdatabase = new BitsDatabase("root","J0llYS1D");
+		bitsdatabase = new BitsDatabase();
 	}
 	
 	public String getIdNumber(String name) {
