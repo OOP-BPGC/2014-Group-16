@@ -192,103 +192,11 @@ public class Student implements MessCustomer{
 		return password;
 	}
 	
-	//Set methods
-	public void setIdNumber(String idNumber) {
-		this.idNumber = idNumber;
-		
-		//copy to database
-		try{  
-			//Execute Query
-			bitsdatabase.setupStudentDB();
-		      
-		      String sql = "UPDATE Students " + "SET idno = '" + idNumber + "'" + " WHERE id = '" + idNumber + "'";
-		      bitsdatabase.statement.executeUpdate(sql);
-		      
-			}catch(SQLException se){
-				//Handle errors for JDBC
-				se.printStackTrace();
-			}catch(Exception e){
-				//Handle errors for Class.forName
-				e.printStackTrace();
-			}finally{
-				//finally block used to close resources
-				bitsdatabase.shutdownDB();
-			}//end try   
-	}
-
-	public void setName(String name, String idNumber) {
-		this.name = name;
-		
-		//copy to database
-				try{  
-					//Execute Query
-					bitsdatabase.setupStudentDB();
-				      
-				      String sql = "UPDATE Students " + "SET name = '" + name + "'" + " WHERE id = '" + idNumber + "'";
-				      bitsdatabase.statement.executeUpdate(sql);
-				      
-					}catch(SQLException se){
-						//Handle errors for JDBC
-						se.printStackTrace();
-					}catch(Exception e){
-						//Handle errors for Class.forName
-						e.printStackTrace();
-					}finally{
-						//finally block used to close resources
-						bitsdatabase.shutdownDB();
-					}//end try   
-		
-	}
-	
-	public void setMessChosen(String mess) {
-		this.mess.messName = mess;
-		
-		//copy to database
-				try{  
-					//Execute Query
-					bitsdatabase.setupStudentDB();
-				      
-				      String sql = "UPDATE Students " + "SET mess = '" + mess + "'" + " WHERE id = '" + idNumber + "'";
-				      bitsdatabase.statement.executeUpdate(sql);
-				      
-					}catch(SQLException se){
-						//Handle errors for JDBC
-						se.printStackTrace();
-					}catch(Exception e){
-						//Handle errors for Class.forName
-						e.printStackTrace();
-					}finally{
-						//finally block used to close resources
-						bitsdatabase.shutdownDB();
-					}//end try   
-	}
-	
-	public void setHasEaten(boolean status, String idNumber) {
-		this.hasEaten = status;
-		
-		//copy to database
-				try{  
-					//Execute Query
-					bitsdatabase.setupStudentDB();
-				      
-				      String sql = "UPDATE Students " + "SET haseaten = '" + String.valueOf(hasEaten) + "'" + " WHERE id = '" + idNumber + "'";
-				      bitsdatabase.statement.executeUpdate(sql);
-				      
-					}catch(SQLException se){
-						//Handle errors for JDBC
-						se.printStackTrace();
-					}catch(Exception e){
-						//Handle errors for Class.forName
-						e.printStackTrace();
-					}finally{
-						//finally block used to close resources
-						bitsdatabase.shutdownDB();
-					}//end try   
-		
-	}	
-	
+	//==========
+	//Set Methods
+	//==========
 	public void setPassword(String pswd, String idNumber) {
-		password = pswd;
+		this.password = pswd;
 		
 		//copy to database
 		try{  
@@ -310,6 +218,30 @@ public class Student implements MessCustomer{
 			}//end try   
 		
 	}
+	
+	public void setHasEaten(boolean status, String idNumber) {
+		this.hasEaten = status;
+		
+		//copy to database
+				try{  
+					//Execute Query
+					bitsdatabase.setupStudentDB();
+				      
+				      String sql = "UPDATE Students " + "SET haseaten = '" + String.valueOf(status) + "'" + " WHERE id = '" + idNumber + "'";
+				      bitsdatabase.statement.executeUpdate(sql);
+				      
+					}catch(SQLException se){
+						//Handle errors for JDBC
+						se.printStackTrace();
+					}catch(Exception e){
+						//Handle errors for Class.forName
+						e.printStackTrace();
+					}finally{
+						//finally block used to close resources
+						bitsdatabase.shutdownDB();
+					}//end try   
+		
+	}	
 	
 	public void giveFeedback(String feedback) {
 		try {
