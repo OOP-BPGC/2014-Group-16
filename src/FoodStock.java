@@ -54,7 +54,7 @@ public class FoodStock {
 		String []foodstock=new String[(rows)];
 		rs=statement.executeQuery("select FoodStock from FoodStock;");
 		while(rs.next()){
-		foodstock[i]=rs.getString("Feedback");	
+		foodstock[i]=rs.getString("FoodStock");	
 		i++;
 		return foodstock;
 		}
