@@ -12,7 +12,7 @@ public class MessAdmin implements MessEmployee{
 	
 	BitsDatabase bitsdatabase = new BitsDatabase("root", "J0llYS1D");
 	Student student = new Student();
-	
+	Mess mess;
 
 	 
 	 //============================
@@ -180,6 +180,17 @@ public class MessAdmin implements MessEmployee{
 				bitsdatabase.shutdownDB();
 			}//end try 
 	 }
+	 
+	 //=========================
+	 //Set for Mess
+	 //=========================
+	 
+	 void setMessTimings(String bstart, String bend, String lstart, String lend, String sstart, String send, String dstart, String dend) {
+			mess.breakfast_time = new String[] {bstart, bend};
+			mess.lunch_time = new String[] {lstart, lend};
+			mess.snack_time = new String[] {sstart, send};
+			mess.dinner_time = new String[] {dstart, dend};
+		}
 		
 
 }

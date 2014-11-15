@@ -25,7 +25,6 @@ public class Mess {
 	    dinner_time = new String[] {"1930", "2130"};
 	}
 	
-	void setTimings() {
-		
-	}
+	
+	
 }
