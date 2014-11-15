@@ -15,17 +15,10 @@ public class Guest {
 	Feedback feedback;
 	BitsDatabase bitsdatabase;
 	
-	Connection connection;
-	Statement statement;
-	ResultSet resultset;
-	
 	public Guest() {
 		this.name = "";
 		feedback = new Feedback();
 		bitsdatabase = new BitsDatabase("root","J0llYS1D");
-		connection = null;
-		statement = null;
-		resultset = null;
 	}
 	
 	public void getMessInfo(String messName) {		
@@ -60,14 +53,5 @@ public class Guest {
 	public void giveFeedback(String comments) {		
 			feedback.addGuestFeedback(name, comments);			
 		} 
-
-	public void shutdowndb() {
-		try{
-			if(connection!=null)
-				connection.close();
-		}catch(SQLException se){
-			se.printStackTrace();
-		}
-	}
 
 }
