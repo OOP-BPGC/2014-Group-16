@@ -10,10 +10,15 @@ import java.sql.SQLException;
  */
 public class MessAdmin implements MessEmployee{
 	
-	BitsDatabase bitsdatabase = new BitsDatabase("root", "J0llYS1D");
-	Student student = new Student();
+	BitsDatabase bitsdatabase;
+	Student student;
 	Mess mess;
 
+	 public MessAdmin() {
+		 bitsdatabase = new BitsDatabase("root", "J0llYS1D");
+		 student = new Student();
+		 mess = new Mess();
+	 }
 	 
 	 //============================
 	 //Set methods for Student

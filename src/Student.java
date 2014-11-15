@@ -6,7 +6,7 @@ import java.sql.*;
  * @author Siddhant
  *
  */
-public class Student implements MessCustomer{
+public class Student {
 
 	String name;
 	String password;
@@ -15,10 +15,10 @@ public class Student implements MessCustomer{
 	
 	boolean hasEaten;
 	
-	Mess mess = new Mess();
+	Mess mess;
 	Accounts account;
 	Feedback feedback;
-	BitsDatabase bitsdatabase = new BitsDatabase("root","J0llYS1D");
+	BitsDatabase bitsdatabase;
 	
 	boolean authStatus;
 	boolean checkinStatus;
@@ -30,6 +30,8 @@ public class Student implements MessCustomer{
 		this.hasEaten = false;
 		this.authStatus = false;
 		this.checkinStatus = false;
+		mess = new Mess();
+		bitsdatabase = new BitsDatabase("root","J0llYS1D");
 	}
 	
 	public String getIdNumber(String name) {

@@ -9,12 +9,23 @@ import java.sql.SQLException;
  */
 public class Login {
 	
-	Student student = new Student();
-	Guest guest = new Guest();
-	BitsDatabase bitsdatabase = new BitsDatabase("root","J0llYS1D");
+	Student student;
+	Guest guest;
+	MessAdmin messadmin;
 	
-	String checkusr = "";
-	String checkpass = "";
+	BitsDatabase bitsdatabase;
+	
+	String checkusr;
+	String checkpass;
+	
+	public Login() {
+		student = new Student();
+		guest = new Guest();
+		messadmin = new MessAdmin();
+		bitsdatabase = new BitsDatabase("root","J0llYS1D");
+		checkusr = "";
+		checkpass = "";
+	}
 	
 	boolean doStudentLogin(String idNumber, String password) {
 		this.checkusr = idNumber;
@@ -118,7 +129,22 @@ public class Login {
 	
 	boolean doGuestCheckIn(String name) {
 		this.guest.name = name;	
-		bitsdatabase.setupGuestDB();
+		try{
+			bitsdatabase.setupGuestDB();
+			
+			String sql = "INSERT INTO Guests VALUES (" + name + ")";
+			bitsdatabase.statement.executeUpdate(sql);
+		}catch(SQLException se){
+			//Handle errors for JDBC
+			se.printStackTrace();
+		}catch(Exception e){
+			//Handle errors for Class.forName
+			e.printStackTrace();
+		}finally{
+			//finally block used to close resources
+			bitsdatabase.shutdownDB();
+		}
+		guest.checkinStatus = true;
 		return true;
 	}
 	

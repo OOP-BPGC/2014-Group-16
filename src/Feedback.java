@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 /**
  * 
- * @author Varun
+ * @author Siddhant, Varun
  *
  */
 public final class Feedback {  
@@ -12,8 +12,11 @@ public final class Feedback {
 	//static String []studentFeedback;
 	//static String feedback;
 	
-	BitsDatabase bitsdatabase = new BitsDatabase("root","J0llYS1D");
-
+	BitsDatabase bitsdatabase;
+	
+	public Feedback() {
+	bitsdatabase = new BitsDatabase("root","J0llYS1D");
+	}
 	/*
 	static String getFeedback(int i) throws Exception{
 		//called by MessAdmin to view a particular Feedback; For GUI purposes

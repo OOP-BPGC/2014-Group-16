@@ -7,21 +7,29 @@ import java.sql.*;
  * @author Siddhant
  *
  */
-public class Guest implements MessCustomer{
+public class Guest {
 	
 	String name;
-	Feedback feedback;
-	BitsDatabase bitsdatabase = new BitsDatabase("root","J0llYS1D");
+	boolean checkinStatus;
 	
-	Connection connection = null;
-	Statement statement = null;
-	ResultSet resultset = null;
+	Feedback feedback;
+	BitsDatabase bitsdatabase;
+	
+	Connection connection;
+	Statement statement;
+	ResultSet resultset;
 	
 	public Guest() {
 		this.name = "";
+		feedback = new Feedback();
+		bitsdatabase = new BitsDatabase("root","J0llYS1D");
+		connection = null;
+		statement = null;
+		resultset = null;
 	}
 	
 	public void getMessInfo(String messName) {		
+		
 		
 	}
 	
