@@ -8,7 +8,7 @@ import java.sql.SQLException;
  * @author Siddhant
  *
  */
-public class MessAdmin implements MessEmployee{
+public class MessAdmin {
 	
 	BitsDatabase bitsdatabase;
 	Student student;
