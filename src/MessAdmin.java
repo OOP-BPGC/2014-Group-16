@@ -19,10 +19,48 @@ public class MessAdmin {
 		 student = new Student();
 		 mess = new Mess();
 	 }
+
+	 //============================
+	 //Student
+	 //============================
 	 
-	 //============================
-	 //Set methods for Student
-	 //============================
+	 public String getStudentPassword(String idNumber) {
+			boolean got = false;
+			String password = "";
+			try{
+				bitsdatabase.setupStudentDB();
+			      
+			      String sql = "SELECT password FROM Students WHERE IDNO = '" + idNumber + "'";
+			      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
+			      
+			      while(bitsdatabase.resultset.next()){
+			    		  //Retrieve by column name
+			    		  password = bitsdatabase.resultset.getString("password");
+			    		  got = true;
+			      }
+			      		if(got == false) {
+			      			System.out.println("Unable to get password. Student ID not found.");
+			      			bitsdatabase.shutdownDB();
+			      			return "";
+			      		}
+			   }catch(SQLException se){
+			      //Handle errors for JDBC
+			      se.printStackTrace();
+			   }catch(Exception e){
+			      //Handle errors for Class.forName
+			      e.printStackTrace();
+			   }finally{
+			      //finally block used to close resources
+				   bitsdatabase.shutdownDB();
+			   }//end try
+			return password;
+		}
+	 
+	//============================
+		 //Set methods for Student
+		 //============================
+	 
+	 
 		public void setIdNumber(String name, String idNumber) {
 			this.student.idNumber = idNumber;
 			
@@ -69,30 +107,6 @@ public class MessAdmin {
 						}//end try   
 			
 		}
-		
-		public void setMessChosen(String mess) {
-			this.student.mess.messName = mess;
-			
-			//copy to database
-					try{  
-						//Execute Query
-						bitsdatabase.setupStudentDB();
-					      
-					      String sql = "UPDATE Students " + "SET mess = '" + mess + "'" + " WHERE id = '" + student.idNumber + "'";
-					      bitsdatabase.statement.executeUpdate(sql);
-					      
-						}catch(SQLException se){
-							//Handle errors for JDBC
-							se.printStackTrace();
-						}catch(Exception e){
-							//Handle errors for Class.forName
-							e.printStackTrace();
-						}finally{
-							//finally block used to close resources
-							bitsdatabase.shutdownDB();
-						}//end try   
-		}
-		
 	
 	
 	//============================
@@ -196,6 +210,270 @@ public class MessAdmin {
 			mess.snack_time = new String[] {sstart, send};
 			mess.dinner_time = new String[] {dstart, dend};
 		}
+	 
+	 //=========================
+	 // Student Feedback
+	 //=========================
 		
+	 String[] getStudentFeedback() throws SQLException{
+			int rows = 0;
+			int i=0;
+			boolean flag = false;
 
+			try {
+				bitsdatabase.setupStudentDB();
+				String sql = "SELECT srno FROM StudentFeedback";
+				this.bitsdatabase.resultset = this.bitsdatabase.statement.executeQuery(sql);
+				while(bitsdatabase.resultset.next()){
+			   		  //Retrieve by column name
+			   		  rows = bitsdatabase.resultset.getInt("srno");
+			   		  flag = true;
+				}
+				
+				if (rows<=0) {
+					System.out.println("No feedback available.");
+					bitsdatabase.shutdownDB();
+					return null;
+				}
+			}catch(SQLException se){
+				//Handle errors for JDBC
+				se.printStackTrace();
+			}catch(Exception e){
+				//Handle errors for Class.forName
+				e.printStackTrace();
+			}finally{
+				//finally block used to close resources
+				bitsdatabase.shutdownDB();
+			}//end try
+			
+			String [] comments =new String[(rows)];
+			flag = false;
+			
+			try{
+				String sql1 = "SELECT comments FROM StudentFeedback WHERE srno = 1";
+				this.bitsdatabase.resultset = this.bitsdatabase.statement.executeQuery(sql1);
+				;
+				while(bitsdatabase.resultset.next()){
+					comments[i]=bitsdatabase.resultset.getString("Feedback");	
+					i++;
+					flag = true;
+				}
+				
+				if(flag == false) {
+	      			System.out.println("Failed. Could not get Feedback.");
+	      			bitsdatabase.shutdownDB();
+	      			return null;
+	      		}
+			}catch(SQLException se){
+				//Handle errors for JDBC
+				se.printStackTrace();
+			}catch(Exception e){
+				//Handle errors for Class.forName
+				e.printStackTrace();
+			}finally{
+				//finally block used to close resources
+				bitsdatabase.shutdownDB();
+			}//end try
+			return comments;
+		}
+		
+		String getStudentFeedback(int srno) {
+			String comments = "";
+			try {
+				int ctot=0;
+				boolean flag = false;
+				bitsdatabase.setupStudentDB();
+				String sql = "SELECT srno FROM StudentFeedback";
+				this.bitsdatabase.resultset = this.bitsdatabase.statement.executeQuery(sql);
+				
+				while(bitsdatabase.resultset.next()){
+		    		  //Retrieve by column name
+		    		  ctot = bitsdatabase.resultset.getInt("srno");
+		    		  //got = true;
+				}
+				
+				if(srno<=ctot) {
+					sql = "SELECT comments FROM StudentFeedback WHERE srno = '" + srno + "'";
+					this.bitsdatabase.resultset = this.bitsdatabase.statement.executeQuery(sql);
+					
+					while(bitsdatabase.resultset.next()){
+			    		  //Retrieve by column name
+			    		  comments = bitsdatabase.resultset.getString("comments");
+			    		  flag = true;
+					}
+					
+					if(flag == false) {
+		      			System.out.println("Failed to get Feedback"); //throw custom exception
+		      			bitsdatabase.shutdownDB();
+		      			return "";
+		      		}					
+					}
+					else{
+						System.out.println("Error. The Student Feedback Database has fewer than " + srno + "entries");
+						//throw new ArrayIndexOutOfBoundsException();
+						return "";
+					}
+			
+				}catch(SQLException se){
+					//Handle errors for JDBC
+					se.printStackTrace();
+				}catch(Exception e){
+					//Handle errors for Class.forName
+					e.printStackTrace();
+				}finally{
+					//finally block used to close resources
+					bitsdatabase.shutdownDB();
+				}//end try
+			return comments;
+		}
+		
+		void clearStudentFeedback() throws SQLException{
+			try {
+				bitsdatabase.setupStudentDB();
+				String sql = "TRUNCATE table StudentFeedback";
+				this.bitsdatabase.resultset = this.bitsdatabase.statement.executeQuery(sql);	
+			}catch(SQLException se){
+				//Handle errors for JDBC
+				se.printStackTrace();
+			}catch(Exception e){
+				//Handle errors for Class.forName
+				e.printStackTrace();
+			}finally{
+				//finally block used to close resources
+				bitsdatabase.shutdownDB();
+			}//end try
+		}
+		
+		 //=========================
+		 // Guest Feedback
+		 //=========================
+		
+		String[] getGuestFeedback() throws SQLException{
+			int rows = 0;
+			int i=0;
+			boolean flag = false;
+
+			try {
+				bitsdatabase.setupStudentDB();
+				String sql = "SELECT srno FROM GuestFeedback";
+				this.bitsdatabase.resultset = this.bitsdatabase.statement.executeQuery(sql);
+				while(bitsdatabase.resultset.next()){
+			   		  //Retrieve by column name
+			   		  rows = bitsdatabase.resultset.getInt("srno");
+			   		  flag = true;
+				}
+				
+				if (rows<=0) {
+					System.out.println("No feedback available.");
+					bitsdatabase.shutdownDB();
+					return null;
+				}
+			}catch(SQLException se){
+				//Handle errors for JDBC
+				se.printStackTrace();
+			}catch(Exception e){
+				//Handle errors for Class.forName
+				e.printStackTrace();
+			}finally{
+				//finally block used to close resources
+				bitsdatabase.shutdownDB();
+			}//end try
+			
+			String [] comments =new String[(rows)];
+			flag = false;
+			
+			try{
+				String sql1 = "SELECT comments FROM GuestFeedback WHERE srno = 1";
+				this.bitsdatabase.resultset = this.bitsdatabase.statement.executeQuery(sql1);
+				;
+				while(bitsdatabase.resultset.next()){
+					comments[i]=bitsdatabase.resultset.getString("Feedback");	
+					i++;
+					flag = true;
+				}
+				
+				if(flag == false) {
+	      			System.out.println("Failed. Could not get Feedback.");
+	      			bitsdatabase.shutdownDB();
+	      			return null;
+	      		}
+			}catch(SQLException se){
+				//Handle errors for JDBC
+				se.printStackTrace();
+			}catch(Exception e){
+				//Handle errors for Class.forName
+				e.printStackTrace();
+			}finally{
+				//finally block used to close resources
+				bitsdatabase.shutdownDB();
+			}//end try
+			return comments;
+		}
+		
+		String getGuestFeedback(int srno) {
+			String comments = "";
+			try {
+				int ctot=0;
+				boolean flag = false;
+				bitsdatabase.setupStudentDB();
+				String sql = "SELECT srno FROM GuestFeedback";
+				this.bitsdatabase.resultset = this.bitsdatabase.statement.executeQuery(sql);
+				
+				while(bitsdatabase.resultset.next()){
+		    		  //Retrieve by column name
+		    		  ctot = bitsdatabase.resultset.getInt("srno");
+		    		  //got = true;
+				}
+				
+				if(srno<=ctot) {
+					sql = "SELECT comments FROM GuestFeedback WHERE srno = '" + srno + "'";
+					this.bitsdatabase.resultset = this.bitsdatabase.statement.executeQuery(sql);
+					
+					while(bitsdatabase.resultset.next()){
+			    		  //Retrieve by column name
+			    		  comments = bitsdatabase.resultset.getString("comments");
+			    		  flag = true;
+					}
+					
+					if(flag == false) {
+		      			System.out.println("Failed to get Feedback"); //throw custom exception
+		      			bitsdatabase.shutdownDB();
+		      			return "";
+		      		}					
+					}
+					else{
+						System.out.println("Error. The Student Feedback Database has fewer than " + srno + "entries");
+						//throw new ArrayIndexOutOfBoundsException();
+						return "";
+					}
+			
+				}catch(SQLException se){
+					//Handle errors for JDBC
+					se.printStackTrace();
+				}catch(Exception e){
+					//Handle errors for Class.forName
+					e.printStackTrace();
+				}finally{
+					//finally block used to close resources
+					bitsdatabase.shutdownDB();
+				}//end try
+			return comments;
+		}
+		
+		void clearGuestFeedback() throws SQLException{
+			try {
+				bitsdatabase.setupStudentDB();
+				String sql = "TRUNCATE table GuestFeedback";
+				this.bitsdatabase.resultset = this.bitsdatabase.statement.executeQuery(sql);	
+			}catch(SQLException se){
+				//Handle errors for JDBC
+				se.printStackTrace();
+			}catch(Exception e){
+				//Handle errors for Class.forName
+				e.printStackTrace();
+			}finally{
+				//finally block used to close resources
+				bitsdatabase.shutdownDB();
+			}//end try
+		}
 }

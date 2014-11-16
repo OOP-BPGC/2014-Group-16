@@ -163,41 +163,15 @@ public class Student {
 		return this.hasEaten;		
 	}
 	
-	public String getPassword(String idNumber) {
-		boolean got = false;
-		try{
-			bitsdatabase.setupStudentDB();
-		      
-		      String sql = "SELECT password FROM Students WHERE IDNO = '" + idNumber + "'";
-		      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
-		      
-		      while(bitsdatabase.resultset.next()){
-		    		  //Retrieve by column name
-		    		  password = bitsdatabase.resultset.getString("password");
-		    		  got = true;
-		      }
-		      		if(got == false) {
-		      			System.out.println("Unable to get password. Student ID not found.");
-		      			bitsdatabase.shutdownDB();
-		      			return "";
-		      		}
-		   }catch(SQLException se){
-		      //Handle errors for JDBC
-		      se.printStackTrace();
-		   }catch(Exception e){
-		      //Handle errors for Class.forName
-		      e.printStackTrace();
-		   }finally{
-		      //finally block used to close resources
-			   bitsdatabase.shutdownDB();
-		   }//end try
-		return password;
-	}
-	
 	//==========
 	//Set Methods
 	//==========
-	public void setPassword(String pswd, String idNumber) {
+	public void setPassword(String pswd, String idNumber) { //Student must have logged in to change password
+		if(this.authStatus == false) {
+			System.out.println("You must login first.");
+			return;
+		}
+		
 		this.password = pswd;
 		
 		//copy to database
@@ -244,6 +218,29 @@ public class Student {
 					}//end try   
 		
 	}	
+	
+	public void setMessChosen(String mess) {
+		this.mess.messName = mess;
+		
+		//copy to database
+				try{  
+					//Execute Query
+					bitsdatabase.setupStudentDB();
+				      
+				      String sql = "UPDATE Students " + "SET mess = '" + mess + "'" + " WHERE id = '" + this.idNumber + "'";
+				      bitsdatabase.statement.executeUpdate(sql);
+				      
+					}catch(SQLException se){
+						//Handle errors for JDBC
+						se.printStackTrace();
+					}catch(Exception e){
+						//Handle errors for Class.forName
+						e.printStackTrace();
+					}finally{
+						//finally block used to close resources
+						bitsdatabase.shutdownDB();
+					}//end try   
+	}
 	
 	public void giveFeedback(String comments, boolean anonymous) {
 		

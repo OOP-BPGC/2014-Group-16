@@ -8,31 +8,12 @@ import java.sql.SQLException;
  *
  */
 public final class Feedback {  
-	//static int total=0;
-	//static String []studentFeedback;
-	//static String feedback;
 	
 	BitsDatabase bitsdatabase;
 	
 	public Feedback() {
 	bitsdatabase = new BitsDatabase();
 	}
-	/*
-	static String getFeedback(int i) throws Exception{
-		//called by MessAdmin to view a particular Feedback; For GUI purposes
-		feedback=db.getFeedback(i);
-		return feedback;	
-	}
-	
-	static String[] getFeedback() throws SQLException{
-		//called by MessAdmin to view all the unread Feedback; For GUI purposes
-		studentFeedback=db.getFeedback();
-		return studentFeedback;	
-	}
-	
-	
-	
-	*/
 	
 	void addGuestFeedback(String name, String comments) {
 		try{
@@ -70,12 +51,4 @@ public final class Feedback {
 		}
 	}
 	
-	/*
-	static void clearFeedback() throws SQLException{
-		//clear the feedback array, after MessAdmin views it;
-		db.clearFeedback();
-		for(int i=0;i<total;i++){
-		studentFeedback[i]=null;	
-		}
-	}*/
 }

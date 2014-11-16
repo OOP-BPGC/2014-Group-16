@@ -28,11 +28,11 @@ public class Login {
 	}
 	
 	boolean doStudentLogin(String idNumber, String password) {
-		this.checkusr = idNumber;
-		this.checkpass = password;
-		
-		boolean match = false;
+
 		try{
+			this.checkusr = idNumber;
+			this.checkpass = password;			
+			boolean flag1 = false;
 			bitsdatabase.setupStudentDB();
 		      
 		      String sqlu = "SELECT idno FROM Students WHERE IDNO = '" + idNumber + "'";
@@ -41,13 +41,14 @@ public class Login {
 		      while(bitsdatabase.resultset.next()){
 		    		  //Retrieve by column name
 		    	  	this.student.idNumber = bitsdatabase.resultset.getString("idno");
-		    		  match = true;
+		    		  flag1 = true;
 		      }
 		      
 		      //Check user
-		      if(match == true && this.student.idNumber.equalsIgnoreCase(checkusr)) {
+		      if(flag1 == true && this.student.idNumber.equalsIgnoreCase(checkusr)) {
 		    	  System.out.println("Student Username Matched.");
 		    	  try{
+		    		  boolean flag2 = false;
 		    		  bitsdatabase.setupStudentDB();
 				      
 				      String sqlp = "SELECT password FROM Students WHERE IDNO = '" + idNumber + "'";
@@ -56,9 +57,9 @@ public class Login {
 				      while(bitsdatabase.resultset.next()){
 				    		  //Retrieve by column name
 				    	  	this.student.password = bitsdatabase.resultset.getString("password");
-				    		  match = true;
+				    		  flag2 = true;
 				      }
-				      if(match == true && this.student.password.equals(checkpass)) {
+				      if(flag2 == true && this.student.password.equals(checkpass)) {
 				    	  System.out.println("Password Matched. Logged In.");
 				    	  this.student.authStatus = true;
 				    	  bitsdatabase.shutdownDB();
