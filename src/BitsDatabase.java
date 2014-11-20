@@ -14,7 +14,8 @@ public class BitsDatabase {
 	
 	public final int TOTAL_STUDENTS = 1000;
 	
-	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
+	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver"; 
+	static final String DB_URL = "jdbc:mysql://localhost/MessManagement";
 	static final String STUDENT_DB_URL = "jdbc:mysql://localhost/Students";
 	static final String GUEST_DB_URL = "jdbc:mysql://localhost/Guests";
 	static final String FEEDBACK_DB_URL = "jdbc:mysql://localhost/Feedback";
@@ -56,6 +57,21 @@ public class BitsDatabase {
 		 String ctime = sdf.format(new Date());
 		 return ctime;
 	 }
+	 
+	 public void setupDB() {
+			try{
+				Class.forName("com.mysql.jdbc.Driver");
+				this.connection = DriverManager.getConnection(DB_URL, username, password);
+				this.statement = this.connection.createStatement();
+				}catch(SQLException se){
+					//Handle errors for JDBC
+					se.printStackTrace();
+				}catch(Exception e){
+					//Handle errors for Class.forName
+					e.printStackTrace();
+				}finally{
+				}//end try
+		} 
 	
 	public void setupStudentDB() {
 		try{

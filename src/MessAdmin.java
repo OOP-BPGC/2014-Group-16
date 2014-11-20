@@ -14,10 +14,10 @@ public class MessAdmin {
 	Student student;
 	Mess mess;
 
-	 public MessAdmin() {
+	 public MessAdmin(String mname) {
 		 bitsdatabase = new BitsDatabase();
 		 student = new Student();
-		 mess = new Mess();
+		 mess = new Mess(mname);
 	 }
 
 	 //============================
@@ -201,15 +201,131 @@ public class MessAdmin {
 	 }
 	 
 	 //=========================
-	 //Set for Mess
+	 //Mess
 	 //=========================
 	 
-	 void setMessTimings(String bstart, String bend, String lstart, String lend, String sstart, String send, String dstart, String dend) {
-			mess.breakfast_time = new String[] {bstart, bend};
-			mess.lunch_time = new String[] {lstart, lend};
-			mess.snack_time = new String[] {sstart, send};
-			mess.dinner_time = new String[] {dstart, dend};
+	 double getAccountBalance(String mname){
+		 double balance = 0;
+		 boolean got = false;
+			try{  
+				  bitsdatabase.setupDB();
+			      String sql = "SELECT acbal FROM MessInfo WHERE mname = '" + mname + "'";
+			      this.bitsdatabase.resultset = this.bitsdatabase.statement.executeQuery(sql);
+			      
+			      while(bitsdatabase.resultset.next()){
+			    		  //Retrieve by column name
+			    		  this.mess.account.totalBalance = bitsdatabase.resultset.getDouble("acbal");
+			    		  balance = this.mess.account.totalBalance;
+			    		  got = true;
+			      }
+			      		if(got == false) {
+			      			System.out.println("Failed. Mess Name not found.");
+			      			bitsdatabase.shutdownDB();
+			      			return 0;
+			      		}
+			   }catch(SQLException se){
+			      //Handle errors for JDBC
+			      se.printStackTrace();
+			   }catch(Exception e){
+			      //Handle errors for Class.forName
+			      e.printStackTrace();
+			   }finally{
+			      //finally block used to close resources
+				   bitsdatabase.shutdownDB();
+			   }//end try
+			
+			return balance;		
 		}
+	 
+	 
+	 public void setMessName(String mname) {
+			
+			//copy to database
+					try{  
+						//Execute Query
+						bitsdatabase.setupStudentDB();
+					      
+					      String sql = "UPDATE MessInfo " + "SET mname = '" + mname + "'" + " WHERE mname = '" + this.mess.messName + "'";
+					      bitsdatabase.statement.executeUpdate(sql);
+					      
+					      this.mess.messName = mname;
+					      
+						}catch(SQLException se){
+							//Handle errors for JDBC
+							se.printStackTrace();
+						}catch(Exception e){
+							//Handle errors for Class.forName
+							e.printStackTrace();
+						}finally{
+							//finally block used to close resources
+							bitsdatabase.shutdownDB();
+						}//end try   
+			
+		}
+	 
+	 public void setMessContractorName(String cname) {
+			
+			//copy to database
+					try{  
+						//Execute Query
+						bitsdatabase.setupStudentDB();
+					      
+					      String sql = "UPDATE MessInfo " + "SET cname = '" + cname + "'" + " WHERE mname = '" + this.mess.messName + "'";
+					      bitsdatabase.statement.executeUpdate(sql);
+					      
+					      this.mess.contractorName = cname;
+					      
+						}catch(SQLException se){
+							//Handle errors for JDBC
+							se.printStackTrace();
+						}catch(Exception e){
+							//Handle errors for Class.forName
+							e.printStackTrace();
+						}finally{
+							//finally block used to close resources
+							bitsdatabase.shutdownDB();
+						}//end try   
+			
+		}
+	
+	 public void setAccountBalance(double amount) {
+			this.mess.account.totalBalance = amount;
+			
+			//copy to database
+					try{  
+						//Execute Query
+						bitsdatabase.setupStudentDB();
+					      
+					      String sql = "UPDATE MessInfo " + "SET acbal = '" + amount + "'" + " WHERE mname = '" + this.mess.messName + "'";
+					      bitsdatabase.statement.executeUpdate(sql);
+					      
+						}catch(SQLException se){
+							//Handle errors for JDBC
+							se.printStackTrace();
+						}catch(Exception e){
+							//Handle errors for Class.forName
+							e.printStackTrace();
+						}finally{
+							//finally block used to close resources
+							bitsdatabase.shutdownDB();
+						}//end try   
+			
+		}
+	 
+	 void setMessTimings(String bstart, String bend, String lstart, String lend, String sstart, String send, String dstart, String dend) {
+			this.mess.breakfast_time = new String[] {bstart, bend};
+			this.mess.lunch_time = new String[] {lstart, lend};
+			this.mess.snack_time = new String[] {sstart, send};
+			this.mess.dinner_time = new String[] {dstart, dend};
+		}
+	 
+	 void setMessRates(long bfast, long lunch, long snacks, long dinner) {
+		 this.mess.breakfastPrice = bfast;
+		 this.mess.lunchPrice = lunch;
+		 this.mess.snackPrice = snacks;
+		 this.mess.dinnerPrice = dinner;
+	 }
+	 
 	 
 	 //=========================
 	 // Student Feedback
@@ -476,4 +592,14 @@ public class MessAdmin {
 				bitsdatabase.shutdownDB();
 			}//end try
 		}
+		
+		/*
+		//=======================
+		//FoodStock
+		//=======================
+		
+		void setLotPrice(String item) {
+			
+		}
+		*/
 }

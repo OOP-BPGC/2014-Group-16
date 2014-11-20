@@ -21,7 +21,7 @@ public class Login {
 	public Login() {
 		student = new Student();
 		guest = new Guest();
-		messadmin = new MessAdmin();
+		messadmin = new MessAdmin("");
 		bitsdatabase = new BitsDatabase();
 		checkusr = "";
 		checkpass = "";
