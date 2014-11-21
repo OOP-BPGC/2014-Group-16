@@ -32,7 +32,7 @@ public class Guest {
 		//copy to database
 		try{  
 			//Execute Query
-			bitsdatabase.setupGuestDB();
+			bitsdatabase.setupDB();
 		      
 			String sql = "INSERT INTO Guests (name) VALUES '" + name + "'";
 		      bitsdatabase.statement.executeUpdate(sql);

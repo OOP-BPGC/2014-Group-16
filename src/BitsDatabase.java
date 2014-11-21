@@ -1,6 +1,11 @@
 package src;
 
-import java.sql.*;
+
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -16,11 +21,6 @@ public class BitsDatabase {
 	
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver"; 
 	static final String DB_URL = "jdbc:mysql://localhost/MessManagement";
-	static final String STUDENT_DB_URL = "jdbc:mysql://localhost/Students";
-	static final String GUEST_DB_URL = "jdbc:mysql://localhost/Guests";
-	static final String FEEDBACK_DB_URL = "jdbc:mysql://localhost/Feedback";
-	static final String AMESS_DB_URL = "jdbc:mysql://localhost/AMess";
-	static final String CMESS_DB_URL = "jdbc:mysql://localhost/CMess";
 	
 	String username = "root";
 	String password = "J0llYS1D";
@@ -51,6 +51,13 @@ public class BitsDatabase {
 		 		  return "";
 		 }
 	 }
+	
+	String getCurrentDate() {
+		SimpleDateFormat sdf = new SimpleDateFormat("ddMMyy");
+		 String cdate = sdf.format(new Date());
+		 
+		 return cdate;
+	}
 	 
 	 String getCurrentTime() {
 		 SimpleDateFormat sdf = new SimpleDateFormat("HHmm");
@@ -71,92 +78,8 @@ public class BitsDatabase {
 					e.printStackTrace();
 				}finally{
 				}//end try
-		} 
-	
-	public void setupStudentDB() {
-		try{
-			Class.forName("com.mysql.jdbc.Driver");
-			this.connection = DriverManager.getConnection(STUDENT_DB_URL, username, password);
-			this.statement = this.connection.createStatement();
-			}catch(SQLException se){
-				//Handle errors for JDBC
-				se.printStackTrace();
-			}catch(Exception e){
-				//Handle errors for Class.forName
-				e.printStackTrace();
-			}finally{
-			}//end try
-	}
-	
-	public void setupGuestDB() {
-		try{
-		      Class.forName("com.mysql.jdbc.Driver");
-		      this.connection = DriverManager.getConnection(GUEST_DB_URL, username, password);
-		      this.statement = this.connection.createStatement();
-			}catch(SQLException se){
-		      //Handle errors for JDBC
-		      se.printStackTrace();
-			}catch(Exception e){
-		      //Handle errors for Class.forName
-		      e.printStackTrace();
-			}finally{
-			}//end try
-	}
-	
-	public void setupMessDB(String messName) {
-		switch(messName){
-		case "A": {
-			try{
-			      Class.forName("com.mysql.jdbc.Driver");
-			      this.connection = DriverManager.getConnection(AMESS_DB_URL, username, password);
-			      this.statement = this.connection.createStatement();
-				}catch(SQLException se){
-			      //Handle errors for JDBC
-			      se.printStackTrace();
-				}catch(Exception e){
-			      //Handle errors for Class.forName
-			      e.printStackTrace();
-				}finally{
-				}
-			break;
 		}
-		
-		case "C": {
-			try{
-			      Class.forName("com.mysql.jdbc.Driver");
-			      this.connection = DriverManager.getConnection(CMESS_DB_URL, username, password);
-			      this.statement = this.connection.createStatement();
-				}catch(SQLException se){
-			      //Handle errors for JDBC
-			      se.printStackTrace();
-				}catch(Exception e){
-			      //Handle errors for Class.forName
-			      e.printStackTrace();
-				}finally{
-				}//end try
-			break;
-		}
-		
-		default: 
-			System.out.println("Invalid Mess.");
-		}
-	}
-	
-	public void setupFeedbackDB() {
-		try{
-			Class.forName("com.mysql.jdbc.Driver");
-			this.connection = DriverManager.getConnection(FEEDBACK_DB_URL, username, password);
-			this.statement = this.connection.createStatement();
-			}catch(SQLException se){
-				//Handle errors for JDBC
-				se.printStackTrace();
-			}catch(Exception e){
-				//Handle errors for Class.forName
-				e.printStackTrace();
-			}finally{
-			}//end try
-	}
-	
+
 	public void shutdownDB() {
 		try{
 			if(connection!=null)

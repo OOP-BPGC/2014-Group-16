@@ -28,7 +28,7 @@ public class MessAdmin {
 			boolean got = false;
 			String password = "";
 			try{
-				bitsdatabase.setupStudentDB();
+				bitsdatabase.setupDB();
 			      
 			      String sql = "SELECT password FROM Students WHERE IDNO = '" + idNumber + "'";
 			      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
@@ -67,7 +67,7 @@ public class MessAdmin {
 			//copy to database
 			try{  
 				//Execute Query
-				bitsdatabase.setupStudentDB();
+				bitsdatabase.setupDB();
 			      
 			      String sql = "UPDATE Students " + "SET idno = '" + idNumber + "'" + " WHERE name = '" + name + "'";
 			      bitsdatabase.statement.executeUpdate(sql);
@@ -90,7 +90,7 @@ public class MessAdmin {
 			//copy to database
 					try{  
 						//Execute Query
-						bitsdatabase.setupStudentDB();
+						bitsdatabase.setupDB();
 					      
 					      String sql = "UPDATE Students " + "SET name = '" + name + "'" + " WHERE id = '" + idNumber + "'";
 					      bitsdatabase.statement.executeUpdate(sql);
@@ -118,9 +118,9 @@ public class MessAdmin {
 			    if (meal.length != 6)
 					throw new Exception(); //make custom
 				//Execute Query
-			    bitsdatabase.setupMessDB(messName);
+			    bitsdatabase.setupDB();
 			      
-			      String sql = "UPDATE MessMenu" + day + " SET  mctype = " + meal[0] + ", mc = " + meal[1] + ", side = " + meal[2] + ", salad = " + meal[3] + ", beverage = " + meal[4] + ", sweet = " + meal[5] + " " + " WHERE meal = 'Breakfast'";
+			      String sql = "UPDATE " + messName + "MessMenu SET  mctype = " + meal[0] + ", mc = " + meal[1] + ", side = " + meal[2] + ", salad = " + meal[3] + ", beverage = " + meal[4] + ", sweet = " + meal[5] + " " + " WHERE meal = 'Breakfast" + day + "'";
 			      bitsdatabase.statement.executeUpdate(sql);
 			      
 				}catch(SQLException se){
@@ -141,9 +141,9 @@ public class MessAdmin {
 			    if (meal.length != 6)
 					throw new Exception(); //make custom
 				//Execute Query
-			    bitsdatabase.setupMessDB(messName);
+			    bitsdatabase.setupDB();
 			      
-			      String sql = "UPDATE MessMenu" + day + " SET  mctype = " + meal[0] + ", mc = " + meal[1] + ", side = " + meal[2] + ", salad = " + meal[3] + ", beverage = " + meal[4] + ", sweet = " + meal[5] + " " + " WHERE meal = 'Lunch'";
+			      String sql = "UPDATE " + messName + "MessMenu SET  mctype = " + meal[0] + ", mc = " + meal[1] + ", side = " + meal[2] + ", salad = " + meal[3] + ", beverage = " + meal[4] + ", sweet = " + meal[5] + " " + " WHERE meal = 'Lunch" + day + "'";
 			      bitsdatabase.statement.executeUpdate(sql);
 			      
 				}catch(SQLException se){
@@ -164,9 +164,9 @@ public class MessAdmin {
 			    if (meal.length != 6)
 					throw new Exception(); //make custom
 				//Execute Query
-				bitsdatabase.setupMessDB(messName);
+			    	bitsdatabase.setupDB();
 			      
-			      String sql = "UPDATE MessMenu" + day + " SET  mctype = " + meal[0] + ", mc = " + meal[1] + ", side = " + meal[2] + ", salad = " + meal[3] + ", beverage = " + meal[4] + ", sweet = " + meal[5] + " " + " WHERE meal = 'Dinner'";
+			      String sql = "UPDATE " + messName + "MessMenu SET  mctype = " + meal[0] + ", mc = " + meal[1] + ", side = " + meal[2] + ", salad = " + meal[3] + ", beverage = " + meal[4] + ", sweet = " + meal[5] + " " + " WHERE meal = 'Dinner" + day + "'";
 			      bitsdatabase.statement.executeUpdate(sql);
 			      
 				}catch(SQLException se){
@@ -181,11 +181,11 @@ public class MessAdmin {
 				}//end try 
 	 } 
 	 
-	 void setMealItem(String day, String meal, String messName, String type, String set) {
+	 void setMealItem(String day, String meal, String messName, String type, String item) {
 		 try{  
-			 bitsdatabase.setupMessDB(messName);
+			 bitsdatabase.setupDB();
 			 
-			 String sql = "UPDATE MessMenu" + day + " SET " + type + "= " + set + "WHERE meal = " + "'" + meal + "'";
+			 String sql = "UPDATE " + messName + "MessMenu SET " + type + "= " + item + "WHERE meal = " + "'" + meal + day + "'";
 			 bitsdatabase.statement.executeUpdate(sql);
 			 
 		 }catch(SQLException se){
@@ -243,7 +243,7 @@ public class MessAdmin {
 			//copy to database
 					try{  
 						//Execute Query
-						bitsdatabase.setupStudentDB();
+						bitsdatabase.setupDB();
 					      
 					      String sql = "UPDATE MessInfo " + "SET mname = '" + mname + "'" + " WHERE mname = '" + this.mess.messName + "'";
 					      bitsdatabase.statement.executeUpdate(sql);
@@ -268,7 +268,7 @@ public class MessAdmin {
 			//copy to database
 					try{  
 						//Execute Query
-						bitsdatabase.setupStudentDB();
+						bitsdatabase.setupDB();
 					      
 					      String sql = "UPDATE MessInfo " + "SET cname = '" + cname + "'" + " WHERE mname = '" + this.mess.messName + "'";
 					      bitsdatabase.statement.executeUpdate(sql);
@@ -294,7 +294,7 @@ public class MessAdmin {
 			//copy to database
 					try{  
 						//Execute Query
-						bitsdatabase.setupStudentDB();
+						bitsdatabase.setupDB();
 					      
 					      String sql = "UPDATE MessInfo " + "SET acbal = '" + amount + "'" + " WHERE mname = '" + this.mess.messName + "'";
 					      bitsdatabase.statement.executeUpdate(sql);
@@ -337,7 +337,7 @@ public class MessAdmin {
 			boolean flag = false;
 
 			try {
-				bitsdatabase.setupStudentDB();
+				bitsdatabase.setupDB();
 				String sql = "SELECT srno FROM StudentFeedback";
 				this.bitsdatabase.resultset = this.bitsdatabase.statement.executeQuery(sql);
 				while(bitsdatabase.resultset.next()){
@@ -398,7 +398,7 @@ public class MessAdmin {
 			try {
 				int ctot=0;
 				boolean flag = false;
-				bitsdatabase.setupStudentDB();
+				bitsdatabase.setupDB();
 				String sql = "SELECT srno FROM StudentFeedback";
 				this.bitsdatabase.resultset = this.bitsdatabase.statement.executeQuery(sql);
 				
@@ -445,7 +445,7 @@ public class MessAdmin {
 		
 		void clearStudentFeedback() throws SQLException{
 			try {
-				bitsdatabase.setupStudentDB();
+				bitsdatabase.setupDB();
 				String sql = "TRUNCATE table StudentFeedback";
 				this.bitsdatabase.resultset = this.bitsdatabase.statement.executeQuery(sql);	
 			}catch(SQLException se){
@@ -470,7 +470,7 @@ public class MessAdmin {
 			boolean flag = false;
 
 			try {
-				bitsdatabase.setupStudentDB();
+				bitsdatabase.setupDB();
 				String sql = "SELECT srno FROM GuestFeedback";
 				this.bitsdatabase.resultset = this.bitsdatabase.statement.executeQuery(sql);
 				while(bitsdatabase.resultset.next()){
@@ -531,7 +531,7 @@ public class MessAdmin {
 			try {
 				int ctot=0;
 				boolean flag = false;
-				bitsdatabase.setupStudentDB();
+				bitsdatabase.setupDB();
 				String sql = "SELECT srno FROM GuestFeedback";
 				this.bitsdatabase.resultset = this.bitsdatabase.statement.executeQuery(sql);
 				
@@ -578,7 +578,7 @@ public class MessAdmin {
 		
 		void clearGuestFeedback() throws SQLException{
 			try {
-				bitsdatabase.setupStudentDB();
+				bitsdatabase.setupDB();
 				String sql = "TRUNCATE table GuestFeedback";
 				this.bitsdatabase.resultset = this.bitsdatabase.statement.executeQuery(sql);	
 			}catch(SQLException se){

@@ -1,7 +1,7 @@
 package src;
 
 
-import java.sql.*;
+import java.sql.SQLException;
 
 /**
  * 
@@ -23,14 +23,13 @@ public class MessMenu {
 	Mess mess = new Mess();
 	 
 	 String[] getBreakfast(String day, String messName) {
-		 day.toUpperCase();
 		 String[] meal = new String [6];
 		 boolean got = false;
 		 
 		 try{
-				bitsdatabase.setupMessDB(messName);
+			 	  bitsdatabase.setupDB();
 			      
-			      String sql = "SELECT mctype, mc, side, salad, beverage, sweet FROM MessMenu" + day + " WHERE meal = 'Breakfast'";
+			      String sql = "SELECT mctype, mc, side, salad, beverage, sweet FROM " + messName + "MessMenu WHERE meal = 'Breakfast" + day + "'";
 			      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
 			      
 			      while(bitsdatabase.resultset.next()){
@@ -64,14 +63,13 @@ public class MessMenu {
 	 }
 	 
 	 String[] getLunch(String day, String messName) {
-		 day.toUpperCase();
 		 String[] meal = new String [6];
 		 boolean got = false;
 		 
 		 try{
-				bitsdatabase.setupMessDB(messName);
+			 	bitsdatabase.setupDB();
 			      
-			      String sql = "SELECT mctype, mc, side, salad, beverage, sweet FROM MessMenu" + day + " WHERE meal = 'Lunch'";
+			      String sql = "SELECT mctype, mc, side, salad, beverage, sweet FROM " + messName + "MessMenu WHERE meal = 'Lunch" + day + "'";
 			      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
 			      
 			      while(bitsdatabase.resultset.next()){
@@ -104,14 +102,13 @@ public class MessMenu {
 	 }
 	 
 	 String[] getSnacks(String day, String messName) {
-		 day.toUpperCase();
 		 String[] meal = new String [6];
 		 boolean got = false;
 		 
 		 try{
-				bitsdatabase.setupMessDB(messName);
+			 bitsdatabase.setupDB();
 			      
-			      String sql = "SELECT mctype, mc, side, salad, beverage, sweet FROM MessMenu" + day + " WHERE meal = 'Snacks'";
+			      String sql = "SELECT mctype, mc, side, salad, beverage, sweet FROM " + messName + "MessMenu WHERE meal = 'Snacks" + day + "'";
 			      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
 			      
 			      while(bitsdatabase.resultset.next()){
@@ -145,13 +142,12 @@ public class MessMenu {
 	 
 	 String[] getDinner(String day, String messName) {
 		 String[] meal = new String [6];
-		 day.toUpperCase();
 		 boolean got = false;
 		 
 		 try{
-				bitsdatabase.setupMessDB(messName);
+				 bitsdatabase.setupDB();
 			      
-			      String sql = "SELECT mctype, mc, side, salad, beverage, sweet FROM MessMenu" + day + " WHERE meal = 'Dinner'";
+			      String sql = "SELECT mctype, mc, side, salad, beverage, sweet FROM " + messName + "MessMenu WHERE meal = 'Dinner" + day + "'";
 			      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
 			      
 			      while(bitsdatabase.resultset.next()){
@@ -188,8 +184,8 @@ public class MessMenu {
 		 boolean got = false;
 		 
 		 try{
-				bitsdatabase.setupMessDB(messName);
-				String sql = "SELECT " + type + " FROM MessMenu" + day + " WHERE meal = '" + meal + "'";
+				bitsdatabase.setupDB();
+				String sql = "SELECT " + type + " FROM " + messName + "MessMenu WHERE meal = " + meal + day + "'";
 			    bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
 			    
 			    while(bitsdatabase.resultset.next()){
@@ -240,9 +236,9 @@ public class MessMenu {
 		 }
 		 
 		 try{
-				bitsdatabase.setupMessDB(messName);
+			 		bitsdatabase.setupDB();
 			      
-			      String sql = "SELECT mctype, mc, side, salad, beverage, sweet FROM MessMenu" + cday + " WHERE meal = " + "'" + cmeal + "'";
+			      String sql = "SELECT mctype, mc, side, salad, beverage, sweet FROM " + messName + "MessMenu WHERE meal = " + cmeal + cday + "'";
 			      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
 			      
 			      while(bitsdatabase.resultset.next()){
@@ -295,9 +291,9 @@ public class MessMenu {
 			 cmeal = "Breakfast";
 		 
 		 try{
-				bitsdatabase.setupMessDB(messName);
+			 		bitsdatabase.setupDB();
 			      
-			      String sql = "SELECT mctype, mc, side, salad, beverage, sweet FROM MessMenu" + cday + " WHERE meal = " + "'" + cmeal + "'";
+			      String sql = "SELECT mctype, mc, side, salad, beverage, sweet FROM " + messName + "MessMenu WHERE meal = " + cmeal + cday + "'";
 			      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
 			      
 			      while(bitsdatabase.resultset.next()){

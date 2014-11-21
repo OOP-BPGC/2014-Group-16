@@ -17,7 +17,7 @@ public final class Feedback {
 	
 	void addGuestFeedback(String name, String comments) {
 		try{
-			bitsdatabase.setupFeedbackDB();
+			bitsdatabase.setupDB();
 			
 			String sql = "INSERT INTO GuestFeedback VALUES (" + name + ", " + comments + ")";
 			bitsdatabase.statement.executeUpdate(sql);
@@ -35,7 +35,7 @@ public final class Feedback {
 	
 	void addStudentFeedback(String name, String comments) {
 		try{
-			bitsdatabase.setupFeedbackDB();
+			bitsdatabase.setupDB();
 			
 			String sql = "INSERT INTO StudentFeedback VALUES (" + name + ", " + comments + ")";
 			bitsdatabase.statement.executeUpdate(sql);

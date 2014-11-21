@@ -1,6 +1,8 @@
 package src;
 
-import java.sql.*;
+import java.sql.SQLException;
+
+
 /**
  * 
  * @author Siddhant
@@ -37,7 +39,7 @@ public class Student {
 	public String getIdNumber(String name) {
 		boolean got = false;
 		try{
-			bitsdatabase.setupStudentDB();
+			bitsdatabase.setupDB();
 		      
 		      String sql = "SELECT idno FROM Students WHERE name = '" + name + "'";
 		      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
@@ -70,7 +72,7 @@ public class Student {
 	public String getName(String idNumber) {
 		boolean got = false;
 		try{
-			bitsdatabase.setupStudentDB();
+			bitsdatabase.setupDB();
 		      
 		      String sql = "SELECT name FROM Students WHERE IDNO = '" + idNumber + "'";
 		      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
@@ -103,7 +105,7 @@ public class Student {
 	public String getMessChosen(String idNumber) {
 		boolean got = false;
 		try{
-			bitsdatabase.setupStudentDB();
+			bitsdatabase.setupDB();
 		      
 		      String sql = "SELECT mess FROM Students WHERE IDNO = '" + idNumber + "'";
 		      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
@@ -135,7 +137,7 @@ public class Student {
 	public boolean getHasEaten(String idNumber){	
 		boolean got = false;
 		try{  
-			  bitsdatabase.setupStudentDB();
+			  bitsdatabase.setupDB();
 		      String sql = "SELECT haseaten FROM Students WHERE IDNO = '" + idNumber + "'";
 		      this.bitsdatabase.resultset = this.bitsdatabase.statement.executeQuery(sql);
 		      
@@ -177,7 +179,7 @@ public class Student {
 		//copy to database
 		try{  
 			//Execute Query
-			bitsdatabase.setupStudentDB();
+			bitsdatabase.setupDB();
 		      
 		      String sql = "UPDATE Students " + "SET password = '" + pswd + "'" + " WHERE id = '" + idNumber + "'";
 		      bitsdatabase.statement.executeUpdate(sql);
@@ -201,7 +203,7 @@ public class Student {
 		//copy to database
 				try{  
 					//Execute Query
-					bitsdatabase.setupStudentDB();
+					bitsdatabase.setupDB();
 				      
 				      String sql = "UPDATE Students " + "SET haseaten = '" + String.valueOf(status) + "'" + " WHERE id = '" + idNumber + "'";
 				      bitsdatabase.statement.executeUpdate(sql);
@@ -225,7 +227,7 @@ public class Student {
 		//copy to database
 				try{  
 					//Execute Query
-					bitsdatabase.setupStudentDB();
+					bitsdatabase.setupDB();
 				      
 				      String sql = "UPDATE Students " + "SET mess = '" + mess + "'" + " WHERE id = '" + this.idNumber + "'";
 				      bitsdatabase.statement.executeUpdate(sql);

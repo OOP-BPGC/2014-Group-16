@@ -33,7 +33,7 @@ public class Login {
 			this.checkusr = idNumber;
 			this.checkpass = password;			
 			boolean flag1 = false;
-			bitsdatabase.setupStudentDB();
+			bitsdatabase.setupDB();
 		      
 		      String sqlu = "SELECT idno FROM Students WHERE IDNO = '" + idNumber + "'";
 		      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sqlu);
@@ -49,7 +49,7 @@ public class Login {
 		    	  System.out.println("Student Username Matched.");
 		    	  try{
 		    		  boolean flag2 = false;
-		    		  bitsdatabase.setupStudentDB();
+		    		  bitsdatabase.setupDB();
 				      
 				      String sqlp = "SELECT password FROM Students WHERE IDNO = '" + idNumber + "'";
 				      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sqlp);
@@ -108,10 +108,10 @@ public class Login {
 		//set this.student to an object corresponding to idNumber in student database
 		//Database - Sr.No, ID, Name, Mess, HasEaten, Password
 			this.student.idNumber = idNumber;
-			bitsdatabase.setupStudentDB(); 
+			bitsdatabase.setupDB(); 
 			this.student.hasEaten = this.student.getHasEaten(idNumber);			
 			
-			bitsdatabase.setupStudentDB();
+			bitsdatabase.setupDB();
 			this.student.mess.messName = this.student.getMessChosen(idNumber);
 			
 			if(!this.student.mess.messName.equals(messName) || this.student.hasEaten == true) {
@@ -122,7 +122,7 @@ public class Login {
 			else {
 				student.checkinStatus = true;
 				System.out.println("Checkin Successful.");
-				bitsdatabase.setupStudentDB();				
+				bitsdatabase.setupDB();				
 				this.student.setHasEaten(true,idNumber);
 				return true;
 			}			
@@ -131,7 +131,7 @@ public class Login {
 	boolean doGuestCheckIn(String name) {
 		this.guest.name = name;	
 		try{
-			bitsdatabase.setupGuestDB();
+			bitsdatabase.setupDB();
 			
 			String sql = "INSERT INTO Guests VALUES (" + name + ")";
 			bitsdatabase.statement.executeUpdate(sql);
