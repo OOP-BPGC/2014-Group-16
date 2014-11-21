@@ -10,6 +10,11 @@ public class Accounts {
 	// Array of credits
 	// Array of debits
 	
+	public Accounts() {
+		bitsdatabase = new BitsDatabase();
+		totalBalance = 0;
+	}
+	
 	void credit(double amount, String messName) {
 		// add element to credits
 		// update total balance

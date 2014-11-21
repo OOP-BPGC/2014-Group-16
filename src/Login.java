@@ -1,6 +1,8 @@
 package src;
 
 import java.sql.SQLException;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 /**
  * 
@@ -12,6 +14,7 @@ public class Login {
 	Student student;
 	Guest guest;
 	MessAdmin messadmin;
+	MessCrew messcrew;
 	
 	BitsDatabase bitsdatabase;
 	
@@ -26,6 +29,44 @@ public class Login {
 		checkusr = "";
 		checkpass = "";
 	}
+	
+	public void clearMessCrewLeave(String messName) {
+		try{
+			bitsdatabase.setupDB();
+		      
+			String tdate = bitsdatabase.getCurrentDate();
+			Date todayDate  = new SimpleDateFormat("dd/MM/yy").parse(tdate);
+			
+		      String sql = "SELECT lstart FROM " + messName + "MessCrew WHERE lstart IS NOT NULL";
+		      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
+		      
+		      while(bitsdatabase.resultset.next());
+			  {
+		       Date todate = new SimpleDateFormat("dd/MM/yy").parse(bitsdatabase.resultset.getString("lstart"));
+		       String name = bitsdatabase.resultset.getString("name");
+		       
+		       String sql1;
+		       
+		      if(todate.before(todayDate)){
+		    	  sql1 = "UPDATE " + messName + "MessCrew " +
+		                   "SET to = NULL,from = NULL,status = NULL WHERE name'"+name+"'";
+	       		 bitsdatabase.statement.executeUpdate(sql1);
+		    	  
+		      }
+			  }
+		       
+		}catch(SQLException se){
+		      //Handle errors for JDBC
+		      se.printStackTrace();
+		 }catch(Exception e){
+		      //Handle errors for Class.forName
+		      e.printStackTrace();
+		  }finally{
+		      //finally block used to close resources
+			  bitsdatabase.shutdownDB();  
+		   }
+		 return;
+}
 	
 	boolean doStudentLogin(String idNumber, String password) {
 
@@ -147,6 +188,162 @@ public class Login {
 		}
 		guest.checkinStatus = true;
 		return true;
+	}
+	
+	//
+	// MessCrew
+	//
+	
+	boolean doMessCrewLogin(String uname, String password, String messName) {
+
+		try{
+			this.checkusr = uname;
+			this.checkpass = password;			
+			boolean flag1 = false;
+			bitsdatabase.setupDB();
+		      
+		      String sqlu = "SELECT uname FROM " + messName + "MessCrew WHERE uname = '" + uname + "'";
+		      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sqlu);
+		      
+		      while(bitsdatabase.resultset.next()){
+		    		  //Retrieve by column name
+		    	  	this.messcrew.uName = bitsdatabase.resultset.getString("uname");
+		    		  flag1 = true;
+		      }
+		      
+		      //Check user
+		      if(flag1 == true && this.messcrew.uName.equalsIgnoreCase(checkusr)) {
+		    	  System.out.println("Mess Crew Username Matched.");
+		    	  try{
+		    		  boolean flag2 = false;
+		    		  bitsdatabase.setupDB();
+				      
+				      String sqlp = "SELECT password FROM " + messName + "MessCrew WHERE uname = '" + uname + "'";
+				      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sqlp);
+				      
+				      while(bitsdatabase.resultset.next()){
+				    		  //Retrieve by column name
+				    	  	this.messcrew.password = bitsdatabase.resultset.getString("password");
+				    		  flag2 = true;
+				      }
+				      if(flag2 == true && this.messcrew.password.equals(checkpass)) {
+				    	  System.out.println("Password Matched. Logged In.");
+				    	  this.messcrew.authStatus = true;
+				    	  bitsdatabase.shutdownDB();
+				    	  return true;
+				      }
+				      else {
+				    	  System.out.println("Login Failed. Incorrect password.");
+				    	  this.messcrew.authStatus = false;
+				    	  bitsdatabase.shutdownDB();
+				      	  return false;
+				      }
+	      		}catch(SQLException se){
+	  		      //Handle errors for JDBC
+	  		      se.printStackTrace();
+	      		 }catch(Exception e){
+	  		      //Handle errors for Class.forName
+	  		      e.printStackTrace();
+	      		  }finally{
+	  		      //finally block used to close resources
+	      			bitsdatabase.shutdownDB();
+	      		   }
+		      }
+		      else{
+		    	  System.out.println("Login Failed. Username not found.");
+		    	  this.messcrew.authStatus = false;
+		    	  bitsdatabase.shutdownDB();
+	      			return false;
+		      }
+		      
+		   }catch(SQLException se){
+		      //Handle errors for JDBC
+		      se.printStackTrace();
+		   }catch(Exception e){
+		      //Handle errors for Class.forName
+		      e.printStackTrace();
+		   }finally{
+		      //finally block used to close resources
+			   bitsdatabase.shutdownDB();
+		   }//end try
+		return false;
+		
+	}
+	
+	boolean doMessAdminLogin(String uname, String password, String messName) {
+
+		try{
+			this.checkusr = uname;
+			this.checkpass = password;			
+			boolean flag1 = false;
+			bitsdatabase.setupDB();
+		      
+		      String sqlu = "SELECT uname FROM " + messName + "MessAdmin WHERE uname = '" + uname + "'";
+		      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sqlu);
+		      
+		      while(bitsdatabase.resultset.next()){
+		    		  //Retrieve by column name
+		    	  	this.messadmin.uName = bitsdatabase.resultset.getString("uname");
+		    		  flag1 = true;
+		      }
+		      
+		      //Check user
+		      if(flag1 == true && this.messadmin.uName.equalsIgnoreCase(checkusr)) {
+		    	  System.out.println("Admin Username Matched.");
+		    	  try{
+		    		  boolean flag2 = false;
+		    		  bitsdatabase.setupDB();
+				      
+				      String sqlp = "SELECT password FROM " + messName + "MessAdmin WHERE uname = '" + uname + "'";
+				      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sqlp);
+				      
+				      while(bitsdatabase.resultset.next()){
+				    		  //Retrieve by column name
+				    	  	this.messadmin.password = bitsdatabase.resultset.getString("password");
+				    		  flag2 = true;
+				      }
+				      if(flag2 == true && this.messadmin.password.equals(checkpass)) {
+				    	  System.out.println("Password Matched. Logged In.");
+				    	  this.messadmin.authStatus = true;
+				    	  bitsdatabase.shutdownDB();
+				    	  return true;
+				      }
+				      else {
+				    	  System.out.println("Login Failed. Incorrect password.");
+				    	  this.messadmin.authStatus = false;
+				    	  bitsdatabase.shutdownDB();
+				      	  return false;
+				      }
+	      		}catch(SQLException se){
+	  		      //Handle errors for JDBC
+	  		      se.printStackTrace();
+	      		 }catch(Exception e){
+	  		      //Handle errors for Class.forName
+	  		      e.printStackTrace();
+	      		  }finally{
+	  		      //finally block used to close resources
+	      			bitsdatabase.shutdownDB();
+	      		   }
+		      }
+		      else{
+		    	  System.out.println("Login Failed. Username not found.");
+		    	  this.messadmin.authStatus = false;
+		    	  bitsdatabase.shutdownDB();
+	      			return false;
+		      }
+		      
+		   }catch(SQLException se){
+		      //Handle errors for JDBC
+		      se.printStackTrace();
+		   }catch(Exception e){
+		      //Handle errors for Class.forName
+		      e.printStackTrace();
+		   }finally{
+		      //finally block used to close resources
+			   bitsdatabase.shutdownDB();
+		   }//end try
+		return false;
+		
 	}
 	
 	

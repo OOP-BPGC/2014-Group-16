@@ -13,6 +13,7 @@ public class Student {
 	String name;
 	String password;
 	String idNumber;
+	double dues;
 	final String username = idNumber;
 	
 	boolean hasEaten;
@@ -34,6 +35,7 @@ public class Student {
 		this.checkinStatus = false;
 		mess = new Mess();
 		bitsdatabase = new BitsDatabase();
+		account = new Accounts();
 	}
 	
 	public String getIdNumber(String name) {
@@ -55,6 +57,32 @@ public class Student {
 	      			bitsdatabase.shutdownDB();
 	      			return "";
 	      		}
+		}catch(SQLException se){
+		      //Handle errors for JDBC
+		      se.printStackTrace();
+		 }catch(Exception e){
+		      //Handle errors for Class.forName
+		      e.printStackTrace();
+		  }finally{
+		      //finally block used to close resources
+			  bitsdatabase.shutdownDB();
+		   }
+		      
+		return this.idNumber;
+	}
+	
+	public String getIdNumber(int srno) {
+		try{
+			bitsdatabase.setupDB();
+		      
+		      String sql = "SELECT idno FROM Students WHERE srno = '" + srno + "'";
+		      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
+		      
+		      while(bitsdatabase.resultset.next()){
+	    		  //Retrieve by column name
+	    		  this.idNumber = bitsdatabase.resultset.getString("idno");
+		      }
+	      		
 		}catch(SQLException se){
 		      //Handle errors for JDBC
 		      se.printStackTrace();
@@ -163,6 +191,37 @@ public class Student {
 		   }//end try
 		
 		return this.hasEaten;		
+	}
+	
+	public double getDues(String idNumber){	
+		boolean got = false;
+		try{  
+			  bitsdatabase.setupDB();
+		      String sql = "SELECT dues FROM Students WHERE IDNO = '" + idNumber + "'";
+		      this.bitsdatabase.resultset = this.bitsdatabase.statement.executeQuery(sql);
+		      
+		      while(bitsdatabase.resultset.next()){
+		    		  //Retrieve by column name
+		    		  this.account.totalBalance = bitsdatabase.resultset.getDouble("dues");
+		    		  got = true;
+		      }
+		      		if(got == false) {
+		      			System.out.println("Failed. Student ID not found.");
+		      			bitsdatabase.shutdownDB();
+		      			return 0;
+		      		}
+		   }catch(SQLException se){
+		      //Handle errors for JDBC
+		      se.printStackTrace();
+		   }catch(Exception e){
+		      //Handle errors for Class.forName
+		      e.printStackTrace();
+		   }finally{
+		      //finally block used to close resources
+			   bitsdatabase.shutdownDB();
+		   }//end try
+		
+		return this.account.totalBalance;		
 	}
 	
 	//==========

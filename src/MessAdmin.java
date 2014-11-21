@@ -13,12 +13,48 @@ public class MessAdmin {
 	BitsDatabase bitsdatabase;
 	Student student;
 	Mess mess;
+	MessCrew messcrew;
+	Accounts account;
+	
+	String uName;
+	String password;
+	
+	boolean authStatus;
 
 	 public MessAdmin(String mname) {
 		 bitsdatabase = new BitsDatabase();
 		 student = new Student();
 		 mess = new Mess(mname);
+		 this.uName = "admin";
+		 this.password = "";
+		 this.authStatus = false;
 	 }
+	 
+	 public String getUsername(int srno) {
+			try{
+				bitsdatabase.setupDB();
+			      
+			      String sql = "SELECT uname FROM " + this.mess.messName + "MessAdmin WHERE srno = '" + srno + "'";
+			      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
+			      
+			      while(bitsdatabase.resultset.next()){
+		    		  //Retrieve by column name
+		    		  this.uName = bitsdatabase.resultset.getString("uname");
+			      }
+		      		
+			}catch(SQLException se){
+			      //Handle errors for JDBC
+			      se.printStackTrace();
+			 }catch(Exception e){
+			      //Handle errors for Class.forName
+			      e.printStackTrace();
+			  }finally{
+			      //finally block used to close resources
+				  bitsdatabase.shutdownDB();
+			   }
+			      
+			return this.uName;
+		}
 
 	 //============================
 	 //Student
@@ -61,7 +97,7 @@ public class MessAdmin {
 		 //============================
 	 
 	 
-		public void setIdNumber(String name, String idNumber) {
+		public void setStudentIdNumber(String name, String idNumber) {
 			this.student.idNumber = idNumber;
 			
 			//copy to database
@@ -84,7 +120,7 @@ public class MessAdmin {
 				}//end try   
 		}
 
-		public void setName(String name, String idNumber) {
+		public void setStudentName(String name, String idNumber) {
 			this.student.name = name;
 			
 			//copy to database
@@ -107,7 +143,79 @@ public class MessAdmin {
 						}//end try   
 			
 		}
+		
+		
+		//============================
+		//MessCrew
+		//============================	
 	
+		public void setMessCrewUsername(String name, String uname, String messName) {
+			this.messcrew.name = name;
+			
+			//copy to database
+			try{  
+				//Execute Query
+				bitsdatabase.setupDB();
+			      
+			      String sql = "UPDATE " + messName + "MessCrew SET uname = '" + uname + "'" + " WHERE name = '" + name + "'";
+			      bitsdatabase.statement.executeUpdate(sql);
+			      
+				}catch(SQLException se){
+					//Handle errors for JDBC
+					se.printStackTrace();
+				}catch(Exception e){
+					//Handle errors for Class.forName
+					e.printStackTrace();
+				}finally{
+					//finally block used to close resources
+					bitsdatabase.shutdownDB();
+				}//end try   
+		}
+
+		public void setMessCrewName(String name, String uname, String messName) {
+			this.messcrew.name = name;
+			
+			//copy to database
+					try{  
+						//Execute Query
+						bitsdatabase.setupDB();
+					      
+					      String sql = "UPDATE " + messName + "MessCrew " + "SET name = '" + name + "'" + " WHERE uname = '" + uname + "'";
+					      bitsdatabase.statement.executeUpdate(sql);
+					      
+						}catch(SQLException se){
+							//Handle errors for JDBC
+							se.printStackTrace();
+						}catch(Exception e){
+							//Handle errors for Class.forName
+							e.printStackTrace();
+						}finally{
+							//finally block used to close resources
+							bitsdatabase.shutdownDB();
+						}//end try   
+			
+		}
+		
+		public void approveMessCrewLeave(String uname, String messName) {
+			this.messcrew.leaveStatus = true;
+			try{  
+				//Execute Query
+				bitsdatabase.setupDB();
+			      
+			      String sql = "UPDATE " + messName + "MessCrew " + "SET lstatus = 'true' WHERE uname = '" + uname + "'";
+			      bitsdatabase.statement.executeUpdate(sql);
+			      
+				}catch(SQLException se){
+					//Handle errors for JDBC
+					se.printStackTrace();
+				}catch(Exception e){
+					//Handle errors for Class.forName
+					e.printStackTrace();
+				}finally{
+					//finally block used to close resources
+					bitsdatabase.shutdownDB();
+				}//end try 
+		}
 	
 	//============================
 	//Set methods for MessMenu
