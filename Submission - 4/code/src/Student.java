@@ -1,8 +1,6 @@
-package src;
+package project;
 
-import java.sql.SQLException;
-
-
+import java.sql.*;
 /**
  * 
  * @author Siddhant
@@ -13,9 +11,8 @@ public class Student {
 	String name;
 	String password;
 	String idNumber;
-	double dues;
 	final String username = idNumber;
-	
+	double Dues;
 	boolean hasEaten;
 	
 	Mess mess;
@@ -35,15 +32,23 @@ public class Student {
 		this.checkinStatus = false;
 		mess = new Mess();
 		bitsdatabase = new BitsDatabase();
-		account = new Accounts();
+	}
+	public Student(String id){
+		this.idNumber = id;
+		this.name = "";
+		this.hasEaten = false;
+		this.authStatus = false;
+		this.checkinStatus = false;
+		mess = new Mess();
+		bitsdatabase = new BitsDatabase();
 	}
 	
 	public String getIdNumber(String name) {
 		boolean got = false;
 		try{
-			bitsdatabase.setupDB();
+			bitsdatabase.setupStudentDB();
 		      
-		      String sql = "SELECT idno FROM Students WHERE name = '" + name + "'";
+		      String sql = "SELECT idno FROM student WHERE name = '" + name + "'";
 		      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
 		      
 		      while(bitsdatabase.resultset.next()){
@@ -70,39 +75,69 @@ public class Student {
 		      
 		return this.idNumber;
 	}
-	
+	public double getDues(String idNumber){	 
+		 		boolean got = false; 
+				try{   
+					  bitsdatabase.setupDB(); 
+				      String sql = "SELECT dues FROM Student WHERE ID = '" + idNumber + "'"; 
+				      this.bitsdatabase.resultset = this.bitsdatabase.statement.executeQuery(sql); 
+				       
+				      while(bitsdatabase.resultset.next()){ 
+				    		  //Retrieve by column name 
+			    		  this.account.totalBalance = bitsdatabase.resultset.getDouble("dues"); 
+				    		  got = true; 
+				      } 
+				      		if(got == false) { 
+				      			System.out.println("Failed. Student ID not found."); 
+				      			bitsdatabase.shutdownDB(); 
+				      			return 0; 
+				      		} 
+				 }catch(SQLException se){ 
+					 		      //Handle errors for JDBC 
+					 		      se.printStackTrace(); 
+					 		   }catch(Exception e){ 
+					 		      //Handle errors for Class.forName 
+					 		      e.printStackTrace(); 
+					 		   }finally{ 
+					 		      //finally block used to close resources 
+					 			   bitsdatabase.shutdownDB(); 
+					  		   }//end try 
+					  		 
+					 		return this.account.totalBalance;		 
+					 	} 
 	public String getIdNumber(int srno) {
 		try{
 			bitsdatabase.setupDB();
 		      
-		      String sql = "SELECT idno FROM Students WHERE srno = '" + srno + "'";
+		      String sql = "SELECT id FROM Student WHERE srno = '" + srno + "'";
 		      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
 		      
 		      while(bitsdatabase.resultset.next()){
 	    		  //Retrieve by column name
-	    		  this.idNumber = bitsdatabase.resultset.getString("idno");
+	    		  this.idNumber = bitsdatabase.resultset.getString("id");
 		      }
-	      		
-		}catch(SQLException se){
-		      //Handle errors for JDBC
-		      se.printStackTrace();
-		 }catch(Exception e){
-		      //Handle errors for Class.forName
-		      e.printStackTrace();
-		  }finally{
-		      //finally block used to close resources
-			  bitsdatabase.shutdownDB();
-		   }
-		      
-		return this.idNumber;
-	}
+		      }catch(SQLException se){
+			      //Handle errors for JDBC
+			      se.printStackTrace();
+			 }catch(Exception e){
+			      //Handle errors for Class.forName
+			      e.printStackTrace();
+			  }finally{
+			      //finally block used to close resources
+				  bitsdatabase.shutdownDB();
+			   }
+			      
+			return this.idNumber;
+		}
+		
+
 	
 	public String getName(String idNumber) {
 		boolean got = false;
 		try{
-			bitsdatabase.setupDB();
+			bitsdatabase.setupStudentDB();
 		      
-		      String sql = "SELECT name FROM Students WHERE IDNO = '" + idNumber + "'";
+		      String sql = "SELECT name FROM Student WHERE ID = '" + idNumber + "'";
 		      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
 		      
 		      while(bitsdatabase.resultset.next()){
@@ -133,9 +168,9 @@ public class Student {
 	public String getMessChosen(String idNumber) {
 		boolean got = false;
 		try{
-			bitsdatabase.setupDB();
+			bitsdatabase.setupStudentDB();
 		      
-		      String sql = "SELECT mess FROM Students WHERE IDNO = '" + idNumber + "'";
+		      String sql = "SELECT mess FROM student WHERE ID = '" + idNumber + "'";
 		      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
 		      
 		      while(bitsdatabase.resultset.next()){
@@ -165,8 +200,8 @@ public class Student {
 	public boolean getHasEaten(String idNumber){	
 		boolean got = false;
 		try{  
-			  bitsdatabase.setupDB();
-		      String sql = "SELECT haseaten FROM Students WHERE IDNO = '" + idNumber + "'";
+			  bitsdatabase.setupStudentDB();
+		      String sql = "SELECT haseaten FROM student WHERE ID = '" + idNumber + "'";
 		      this.bitsdatabase.resultset = this.bitsdatabase.statement.executeQuery(sql);
 		      
 		      while(bitsdatabase.resultset.next()){
@@ -193,22 +228,23 @@ public class Student {
 		return this.hasEaten;		
 	}
 	
-	public double getDues(String idNumber){	
+	public String getPassword(String idNumber) {
 		boolean got = false;
-		try{  
-			  bitsdatabase.setupDB();
-		      String sql = "SELECT dues FROM Students WHERE IDNO = '" + idNumber + "'";
-		      this.bitsdatabase.resultset = this.bitsdatabase.statement.executeQuery(sql);
+		try{
+			bitsdatabase.setupStudentDB();
+		      
+		      String sql = "SELECT password FROM student WHERE ID = '" + idNumber + "'";
+		      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
 		      
 		      while(bitsdatabase.resultset.next()){
 		    		  //Retrieve by column name
-		    		  this.account.totalBalance = bitsdatabase.resultset.getDouble("dues");
+		    		  password = bitsdatabase.resultset.getString("password");
 		    		  got = true;
 		      }
 		      		if(got == false) {
-		      			System.out.println("Failed. Student ID not found.");
+		      			System.out.println("Unable to get password. Student ID not found.");
 		      			bitsdatabase.shutdownDB();
-		      			return 0;
+		      			return "";
 		      		}
 		   }catch(SQLException se){
 		      //Handle errors for JDBC
@@ -220,27 +256,21 @@ public class Student {
 		      //finally block used to close resources
 			   bitsdatabase.shutdownDB();
 		   }//end try
-		
-		return this.account.totalBalance;		
+		return password;
 	}
 	
 	//==========
 	//Set Methods
 	//==========
-	public void setPassword(String pswd, String idNumber) { //Student must have logged in to change password
-		if(this.authStatus == false) {
-			System.out.println("You must login first.");
-			return;
-		}
-		
+	public void setPassword(String pswd, String idNumber) {
 		this.password = pswd;
 		
 		//copy to database
 		try{  
 			//Execute Query
-			bitsdatabase.setupDB();
+			bitsdatabase.setupStudentDB();
 		      
-		      String sql = "UPDATE Students " + "SET password = '" + pswd + "'" + " WHERE id = '" + idNumber + "'";
+		      String sql = "UPDATE student " + "SET password = '" + pswd + "'" + " WHERE id = '" + idNumber + "'";
 		      bitsdatabase.statement.executeUpdate(sql);
 		      
 			}catch(SQLException se){
@@ -262,9 +292,9 @@ public class Student {
 		//copy to database
 				try{  
 					//Execute Query
-					bitsdatabase.setupDB();
+					bitsdatabase.setupStudentDB();
 				      
-				      String sql = "UPDATE Students " + "SET haseaten = '" + String.valueOf(status) + "'" + " WHERE id = '" + idNumber + "'";
+				      String sql = "UPDATE student " + "SET haseaten = " + status + "" + " WHERE id = '" + idNumber + "'";
 				      bitsdatabase.statement.executeUpdate(sql);
 				      
 					}catch(SQLException se){
@@ -280,37 +310,12 @@ public class Student {
 		
 	}	
 	
-	public void setMessChosen(String mess) {
-		this.mess.messName = mess;
-		
-		//copy to database
-				try{  
-					//Execute Query
-					bitsdatabase.setupDB();
-				      
-				      String sql = "UPDATE Students " + "SET mess = '" + mess + "'" + " WHERE id = '" + this.idNumber + "'";
-				      bitsdatabase.statement.executeUpdate(sql);
-				      
-					}catch(SQLException se){
-						//Handle errors for JDBC
-						se.printStackTrace();
-					}catch(Exception e){
-						//Handle errors for Class.forName
-						e.printStackTrace();
-					}finally{
-						//finally block used to close resources
-						bitsdatabase.shutdownDB();
-					}//end try   
+	public void Feedback(String comments, boolean anonymous) throws SQLException {
+	if(anonymous)
+	Feedback.addStudentFeedback(comments,null);	
+	else
+	Feedback.addStudentFeedback(comments,this.getName(idNumber));
+	
 	}
-	
-	public void giveFeedback(String comments, boolean anonymous) {
-		
-		if(anonymous==true)
-			feedback.addStudentFeedback("",comments);
-		else
-			feedback.addStudentFeedback(this.name,comments);
-	}	
-	
-	
 	
 }

@@ -1,6 +1,8 @@
-package src;
+package project;
 
 import java.sql.SQLException;
+
+import javax.swing.JOptionPane;
 
 
 /**
@@ -105,7 +107,7 @@ public class MessAdmin {
 				//Execute Query
 				bitsdatabase.setupDB();
 			      
-			      String sql = "UPDATE Students " + "SET idno = '" + idNumber + "'" + " WHERE name = '" + name + "'";
+			      String sql = "UPDATE Student " + "SET id = '" + idNumber + "'" + " WHERE name = '" + name + "'";
 			      bitsdatabase.statement.executeUpdate(sql);
 			      
 				}catch(SQLException se){
@@ -113,6 +115,7 @@ public class MessAdmin {
 					se.printStackTrace();
 				}catch(Exception e){
 					//Handle errors for Class.forName
+					JOptionPane.showMessageDialog(null, "Incorrect Details Entered");
 					e.printStackTrace();
 				}finally{
 					//finally block used to close resources
@@ -128,7 +131,7 @@ public class MessAdmin {
 						//Execute Query
 						bitsdatabase.setupDB();
 					      
-					      String sql = "UPDATE Students " + "SET name = '" + name + "'" + " WHERE id = '" + idNumber + "'";
+					      String sql = "UPDATE Student " + "SET name = '" + name + "'" + " WHERE id = '" + idNumber + "'";
 					      bitsdatabase.statement.executeUpdate(sql);
 					      
 						}catch(SQLException se){
@@ -228,7 +231,7 @@ public class MessAdmin {
 				//Execute Query
 			    bitsdatabase.setupDB();
 			      
-			      String sql = "UPDATE " + messName + "MessMenu SET  mctype = " + meal[0] + ", mc = " + meal[1] + ", side = " + meal[2] + ", salad = " + meal[3] + ", beverage = " + meal[4] + ", sweet = " + meal[5] + " " + " WHERE meal = 'Breakfast" + day + "'";
+			      String sql = "UPDATE " + messName + "MessMenu SET  mctype = '" + meal[0] + "', mc = '" + meal[1] + "', side = '" + meal[2] + "', salad = '" + meal[3] + "', beverage = '" + meal[4] + "', sweet = '" + meal[5] + "' " + " WHERE meal = 'Breakfast" + day + "'";
 			      bitsdatabase.statement.executeUpdate(sql);
 			      
 				}catch(SQLException se){
@@ -251,7 +254,7 @@ public class MessAdmin {
 				//Execute Query
 			    bitsdatabase.setupDB();
 			      
-			      String sql = "UPDATE " + messName + "MessMenu SET  mctype = " + meal[0] + ", mc = " + meal[1] + ", side = " + meal[2] + ", salad = " + meal[3] + ", beverage = " + meal[4] + ", sweet = " + meal[5] + " " + " WHERE meal = 'Lunch" + day + "'";
+			      String sql = "UPDATE " + messName + "MessMenu SET  mctype = '" + meal[0] + "', mc = '" + meal[1] + "', side = '" + meal[2] + "', salad = '" + meal[3] + "', beverage = '" + meal[4] + "', sweet = '" + meal[5] + "' " + " WHERE meal = 'Lunch" + day + "'";
 			      bitsdatabase.statement.executeUpdate(sql);
 			      
 				}catch(SQLException se){
@@ -274,7 +277,7 @@ public class MessAdmin {
 				//Execute Query
 			    	bitsdatabase.setupDB();
 			      
-			      String sql = "UPDATE " + messName + "MessMenu SET  mctype = " + meal[0] + ", mc = " + meal[1] + ", side = " + meal[2] + ", salad = " + meal[3] + ", beverage = " + meal[4] + ", sweet = " + meal[5] + " " + " WHERE meal = 'Dinner" + day + "'";
+			      String sql = "UPDATE " + messName + "MessMenu SET  mctype = '" + meal[0] + "', mc = '" + meal[1] + "', side = '" + meal[2] + "', salad = '" + meal[3] + "', beverage = '" + meal[4] + "', sweet = '" + meal[5] + "' " + " WHERE meal = 'Dinner" + day + "'";
 			      bitsdatabase.statement.executeUpdate(sql);
 			      
 				}catch(SQLException se){
@@ -396,7 +399,7 @@ public class MessAdmin {
 			
 		}
 	
-	 public void setAccountBalance(double amount) {
+	 public void setAccountBalance(double amount,String mname) {
 			this.mess.account.totalBalance = amount;
 			
 			//copy to database
@@ -404,7 +407,7 @@ public class MessAdmin {
 						//Execute Query
 						bitsdatabase.setupDB();
 					      
-					      String sql = "UPDATE MessInfo " + "SET acbal = '" + amount + "'" + " WHERE mname = '" + this.mess.messName + "'";
+					      String sql = "UPDATE MessInfo " + "SET acbal = '" + amount + "'" + " WHERE mname = '" + mname + "';";
 					      bitsdatabase.statement.executeUpdate(sql);
 					      
 						}catch(SQLException se){
@@ -440,65 +443,20 @@ public class MessAdmin {
 	 //=========================
 		
 	 String[] getStudentFeedback() throws SQLException{
-			int rows = 0;
-			int i=0;
-			boolean flag = false;
-
-			try {
-				bitsdatabase.setupDB();
-				String sql = "SELECT srno FROM StudentFeedback";
-				this.bitsdatabase.resultset = this.bitsdatabase.statement.executeQuery(sql);
-				while(bitsdatabase.resultset.next()){
-			   		  //Retrieve by column name
-			   		  rows = bitsdatabase.resultset.getInt("srno");
-			   		  flag = true;
-				}
-				
-				if (rows<=0) {
-					System.out.println("No feedback available.");
-					bitsdatabase.shutdownDB();
-					return null;
-				}
-			}catch(SQLException se){
-				//Handle errors for JDBC
-				se.printStackTrace();
-			}catch(Exception e){
-				//Handle errors for Class.forName
-				e.printStackTrace();
-			}finally{
-				//finally block used to close resources
-				bitsdatabase.shutdownDB();
-			}//end try
+		String[]feedback=new String[100];	
 			
-			String [] comments =new String[(rows)];
-			flag = false;
-			
-			try{
-				String sql1 = "SELECT comments FROM StudentFeedback WHERE srno = 1";
-				this.bitsdatabase.resultset = this.bitsdatabase.statement.executeQuery(sql1);
-				;
-				while(bitsdatabase.resultset.next()){
-					comments[i]=bitsdatabase.resultset.getString("Feedback");	
-					i++;
-					flag = true;
-				}
-				
-				if(flag == false) {
-	      			System.out.println("Failed. Could not get Feedback.");
-	      			bitsdatabase.shutdownDB();
-	      			return null;
-	      		}
-			}catch(SQLException se){
-				//Handle errors for JDBC
-				se.printStackTrace();
-			}catch(Exception e){
-				//Handle errors for Class.forName
-				e.printStackTrace();
-			}finally{
-				//finally block used to close resources
-				bitsdatabase.shutdownDB();
-			}//end try
-			return comments;
+		int i=0; 
+		bitsdatabase.setupDB();
+		String sql="Select name from studentfeedback;";
+		bitsdatabase.resultset=bitsdatabase.statement.executeQuery(sql);
+		while(bitsdatabase.resultset.next()){
+		feedback[i]=bitsdatabase.resultset.getString("name");
+		i++;
+		}
+		while(i<100)
+			feedback[i++]="null";
+		    
+		return feedback;
 		}
 		
 		String getStudentFeedback(int srno) {
@@ -517,7 +475,7 @@ public class MessAdmin {
 				}
 				
 				if(srno<=ctot) {
-					sql = "SELECT comments FROM StudentFeedback WHERE srno = '" + srno + "'";
+					sql = "SELECT feedback FROM StudentFeedback WHERE srno = '" + srno + "'";
 					this.bitsdatabase.resultset = this.bitsdatabase.statement.executeQuery(sql);
 					
 					while(bitsdatabase.resultset.next()){
@@ -554,8 +512,8 @@ public class MessAdmin {
 		void clearStudentFeedback() throws SQLException{
 			try {
 				bitsdatabase.setupDB();
-				String sql = "TRUNCATE table StudentFeedback";
-				this.bitsdatabase.resultset = this.bitsdatabase.statement.executeQuery(sql);	
+				String sql = "Truncate table StudentFeedback";
+				this.bitsdatabase.statement.executeUpdate(sql);	
 			}catch(SQLException se){
 				//Handle errors for JDBC
 				se.printStackTrace();
@@ -573,65 +531,20 @@ public class MessAdmin {
 		 //=========================
 		
 		String[] getGuestFeedback() throws SQLException{
-			int rows = 0;
-			int i=0;
-			boolean flag = false;
-
-			try {
-				bitsdatabase.setupDB();
-				String sql = "SELECT srno FROM GuestFeedback";
-				this.bitsdatabase.resultset = this.bitsdatabase.statement.executeQuery(sql);
-				while(bitsdatabase.resultset.next()){
-			   		  //Retrieve by column name
-			   		  rows = bitsdatabase.resultset.getInt("srno");
-			   		  flag = true;
-				}
-				
-				if (rows<=0) {
-					System.out.println("No feedback available.");
-					bitsdatabase.shutdownDB();
-					return null;
-				}
-			}catch(SQLException se){
-				//Handle errors for JDBC
-				se.printStackTrace();
-			}catch(Exception e){
-				//Handle errors for Class.forName
-				e.printStackTrace();
-			}finally{
-				//finally block used to close resources
-				bitsdatabase.shutdownDB();
-			}//end try
+			String[]feedback=new String[100];	
 			
-			String [] comments =new String[(rows)];
-			flag = false;
-			
-			try{
-				String sql1 = "SELECT comments FROM GuestFeedback WHERE srno = 1";
-				this.bitsdatabase.resultset = this.bitsdatabase.statement.executeQuery(sql1);
-				;
-				while(bitsdatabase.resultset.next()){
-					comments[i]=bitsdatabase.resultset.getString("Feedback");	
-					i++;
-					flag = true;
-				}
-				
-				if(flag == false) {
-	      			System.out.println("Failed. Could not get Feedback.");
-	      			bitsdatabase.shutdownDB();
-	      			return null;
-	      		}
-			}catch(SQLException se){
-				//Handle errors for JDBC
-				se.printStackTrace();
-			}catch(Exception e){
-				//Handle errors for Class.forName
-				e.printStackTrace();
-			}finally{
-				//finally block used to close resources
-				bitsdatabase.shutdownDB();
-			}//end try
-			return comments;
+			int i=0; 
+			bitsdatabase.setupDB();
+			String sql="Select name from guestfeedback;";
+			bitsdatabase.resultset=bitsdatabase.statement.executeQuery(sql);
+			while(bitsdatabase.resultset.next()){
+			feedback[i]=bitsdatabase.resultset.getString("name");
+			i++;
+			}
+			while(i<100)
+				feedback[i++]="null";
+			    
+			return feedback;
 		}
 		
 		String getGuestFeedback(int srno) {
@@ -688,7 +601,7 @@ public class MessAdmin {
 			try {
 				bitsdatabase.setupDB();
 				String sql = "TRUNCATE table GuestFeedback";
-				this.bitsdatabase.resultset = this.bitsdatabase.statement.executeQuery(sql);	
+				this.bitsdatabase.statement.executeUpdate(sql);	
 			}catch(SQLException se){
 				//Handle errors for JDBC
 				se.printStackTrace();

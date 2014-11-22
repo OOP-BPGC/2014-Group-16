@@ -1,4 +1,4 @@
-package src;
+package project;
 
 
 import java.sql.SQLException;
@@ -238,7 +238,7 @@ public class MessMenu {
 		 try{
 			 		bitsdatabase.setupDB();
 			      
-			      String sql = "SELECT mctype, mc, side, salad, beverage, sweet FROM " + messName + "MessMenu WHERE meal = " + cmeal + cday + "'";
+			      String sql = "SELECT mctype, mc, side, salad, beverage, sweet FROM " + messName + "MessMenu WHERE meal = '" + cmeal + cday + "'";
 			      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
 			      
 			      while(bitsdatabase.resultset.next()){
@@ -293,7 +293,7 @@ public class MessMenu {
 		 try{
 			 		bitsdatabase.setupDB();
 			      
-			      String sql = "SELECT mctype, mc, side, salad, beverage, sweet FROM " + messName + "MessMenu WHERE meal = " + cmeal + cday + "'";
+			      String sql = "SELECT mctype, mc, side, salad, beverage, sweet FROM " + messName + "MessMenu WHERE meal = '" + cmeal + cday + "'";
 			      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
 			      
 			      while(bitsdatabase.resultset.next()){

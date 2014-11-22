@@ -1,4 +1,4 @@
-package src;
+package project;
 
 import java.sql.SQLException;
 
@@ -21,7 +21,7 @@ public class Mess {
 	double adminPay;
 	double messcrewPay;
 	
-	Accounts account;
+	Accounts account=new Accounts();
 	MessMenu menu;
 	Student student;
 	MessCrew messcrew;
@@ -129,7 +129,7 @@ public class Mess {
 	}
 	
 	void setStudentDues(String idno, double dues) {
-		this.student.dues = dues;
+		this.student.Dues = dues;
 		
 		try{  
 			//Execute Query

@@ -1,4 +1,4 @@
-package src;
+package project;
 
 import java.sql.SQLException;
 
@@ -10,7 +10,7 @@ public class MessCrew {
 	
 	String name;
 	String password;
-	String uName;
+	static String uName;
 	String jobtitle;
 	String shifts;
 	final String username = uName;
@@ -26,7 +26,9 @@ public class MessCrew {
 		mess = new Mess();
 		bitsdatabase = new BitsDatabase();
 	}
-	
+	void setUsername(String user){
+	this.uName=user;	
+	}
 	public String getUsername(int srno) {
 		try{
 			bitsdatabase.setupDB();
@@ -59,7 +61,7 @@ public class MessCrew {
 		try{
 			bitsdatabase.setupDB();
 		      
-		      String sql = "SELECT name FROM " + this.mess.messName + "MessCrew WHERE uname = '" + uname + "'";
+		      String sql = "SELECT name FROM " +Driver.cusermess+ "MessCrew WHERE uname = '" + uname + "'";
 		      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
 		      while(bitsdatabase.resultset.next()){
 		    	  
@@ -127,7 +129,7 @@ public class MessCrew {
 		try{
 			bitsdatabase.setupDB();
 		      
-		      String sql = "SELECT job FROM " + this.mess.messName + "MessCrew WHERE uname = '" + uname + "'";
+		      String sql = "SELECT job FROM " + Driver.cusermess + "MessCrew WHERE uname = '" + uname + "'";
 		      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
 		      while(bitsdatabase.resultset.next()){
 		    	  
@@ -163,7 +165,7 @@ public class MessCrew {
 		try{
 			bitsdatabase.setupDB();
 		      
-		      String sql = "SELECT shifts FROM " + this.mess.messName + "MessCrew WHERE uname = '" + uname + "'";
+		      String sql = "SELECT shifts FROM " +Driver.cusermess + "MessCrew WHERE uname = '" + uname + "'";
 		      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
 		      while(bitsdatabase.resultset.next()){
 		    	  
@@ -191,23 +193,24 @@ public class MessCrew {
 		 return cname;
 	}
 	
-	public double getAccountBalance(String uname){	
+	public float getAccountBalance(String uname){	
 		boolean got = false;
 		try{  
 			  bitsdatabase.setupDB();
-		      String sql = "SELECT acbal FROM " + this.mess.messName + "MessCrew WHERE uname = '" + uname + "'";
+		      String sql = "SELECT acbal FROM "+Driver.cusermess+ "MessCrew WHERE uname = '" + uname + "'";
 		      this.bitsdatabase.resultset = this.bitsdatabase.statement.executeQuery(sql);
 		      
-		      while(bitsdatabase.resultset.next()){
-		    		  //Retrieve by column name
-		    		  this.account.totalBalance = bitsdatabase.resultset.getDouble("acbal");
-		    		  got = true;
-		      }
-		      		if(got == false) {
+		      
+		    	  bitsdatabase.resultset.next();
+		    	  //Retrieve by column name
+		    		  return bitsdatabase.resultset.getFloat("acbal");
+		    		 // got = true;
+		      
+		      		/*if(got == false) {
 		      			System.out.println("Failed. Username not found.");
 		      			bitsdatabase.shutdownDB();
 		      			return 0;
-		      		}
+		      		}*/
 		   }catch(SQLException se){
 		      //Handle errors for JDBC
 		      se.printStackTrace();
@@ -218,8 +221,8 @@ public class MessCrew {
 		      //finally block used to close resources
 			   bitsdatabase.shutdownDB();
 		   }//end try
-		
-		return this.account.totalBalance;		
+		return 0.0f;
+		//return this.account.totalBalance;		
 	}
 	
 	public long getFoodLots(String item) {
@@ -228,17 +231,17 @@ public class MessCrew {
 		try{
 			bitsdatabase.setupDB();
 		      
-		      String sql = "SELECT lots FROM " + this.mess.messName + "FoodStocks WHERE name = '" + item + "'";
+		      String sql = "SELECT stock FROM "+Driver.cusermess+ "FoodStock WHERE name = '" + item + "'";
 		      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
 		      
 		      while(bitsdatabase.resultset.next()){
 	    		  //Retrieve by column name
-	    		  l = bitsdatabase.resultset.getLong("lots");
+	    		  l = bitsdatabase.resultset.getLong("stock");
 	    		  got = true;
 		      }
 	      		
 		      if(got == false) {
-	      			System.out.println("Unable to get lots. Illegal Parameters.");
+	      			System.out.println("Unable to get stock. Illegal Parameters.");
 	      			bitsdatabase.shutdownDB();
 	      			return l;
 	      		}
@@ -260,12 +263,12 @@ public class MessCrew {
 	//Set Methods
 	//
 	
-	void setFoodLots(String item, long lots) {
+	void setFoodLots(String item, int lots) {
 		try{  
 			//Execute Query
 			bitsdatabase.setupDB();
 		      
-		      String sql = "UPDATE " + this.mess.messName + "FoodStocks SET lots = '" + String.valueOf(lots) + "'" + " WHERE name = '" + item + "'";
+		      String sql = "UPDATE " + Driver.cusermess + "FoodStock SET stock = '" + String.valueOf(lots) + "'" + " WHERE name = '" + item + "'";
 		      bitsdatabase.statement.executeUpdate(sql);
 		      
 			}catch(SQLException se){
@@ -293,7 +296,7 @@ public class MessCrew {
 			//Execute Query
 			bitsdatabase.setupDB();
 		      
-		      String sql = "UPDATE " + this.mess.messName + "MessCrew SET password = '" + pswd + "'" + " WHERE id = '" + uName + "'";
+		      String sql = "UPDATE " +Driver.cusermess+ "MessCrew SET password = '" + pswd + "'" + " WHERE id = '" + uName + "'";
 		      bitsdatabase.statement.executeUpdate(sql);
 		      
 			}catch(SQLException se){
@@ -318,7 +321,7 @@ public class MessCrew {
 		try{
 			bitsdatabase.setupDB();
 		      
-		      String sql = "SELECT lstatus FROM " + this.mess.messName + "MessCrew WHERE uname='" + uName + "'";
+		      String sql = "SELECT lstatus FROM " +Driver.cusermess+ "MessCrew WHERE uname='" + uName + "'";
 		      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sql);
 		      
 		      while(bitsdatabase.resultset.next()) {
@@ -349,7 +352,7 @@ public class MessCrew {
 		try{
 			bitsdatabase.setupDB();
 		      
-		      String sql = "UPDATE " + this.mess.messName + "MessCrew SET lstart='" + lstart + "', lend='" + lend + "' WHERE uname='" + this.uName + "'";
+		      String sql = "UPDATE " +Driver.cusermess+ "MessCrew SET lstart='" + lstart + "', lend='" + lend + "' WHERE uname='" + Driver.cusername + "'";
 		      bitsdatabase.statement.executeUpdate(sql);
 		      
 		}catch(SQLException se){

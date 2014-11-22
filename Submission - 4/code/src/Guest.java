@@ -1,4 +1,4 @@
-package src;
+package project;
 
 import java.sql.*;
 
@@ -30,11 +30,11 @@ public class Guest {
 		this.name = name;
 		
 		//copy to database
-		try{  
+		/*try{  
 			//Execute Query
-			bitsdatabase.setupDB();
+			bitsdatabase.setupGuestDB();
 		      
-			String sql = "INSERT INTO Guests (name) VALUES '" + name + "'";
+			String sql = "INSERT INTO Guests (name) VALUES '" + name + "';";
 		      bitsdatabase.statement.executeUpdate(sql);
 		      
 			}catch(SQLException se){
@@ -46,12 +46,12 @@ public class Guest {
 			}finally{
 				//finally block used to close resources
 				bitsdatabase.shutdownDB();
-			}//end try   		
+			}//end try   */		
 	}
 	
 	
 	public void giveFeedback(String comments) {		
-			feedback.addGuestFeedback(name, comments);			
+			Feedback.addGuestFeedback(name, comments);			
 		} 
 
 }

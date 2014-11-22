@@ -1,4 +1,4 @@
-package src;
+package project;
 
 import java.sql.SQLException;
 import java.util.Date;
@@ -14,7 +14,7 @@ public class Login {
 	Student student;
 	Guest guest;
 	MessAdmin messadmin;
-	MessCrew messcrew;
+	MessCrew messcrew=new MessCrew();
 	
 	BitsDatabase bitsdatabase;
 	
@@ -76,12 +76,12 @@ public class Login {
 			boolean flag1 = false;
 			bitsdatabase.setupDB();
 		      
-		      String sqlu = "SELECT idno FROM Students WHERE IDNO = '" + idNumber + "'";
+		      String sqlu = "SELECT id FROM Student WHERE ID = '" + idNumber + "'";
 		      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sqlu);
 		      
 		      while(bitsdatabase.resultset.next()){
 		    		  //Retrieve by column name
-		    	  	this.student.idNumber = bitsdatabase.resultset.getString("idno");
+		    	  	this.student.idNumber = bitsdatabase.resultset.getString("id");
 		    		  flag1 = true;
 		      }
 		      
@@ -92,7 +92,7 @@ public class Login {
 		    		  boolean flag2 = false;
 		    		  bitsdatabase.setupDB();
 				      
-				      String sqlp = "SELECT password FROM Students WHERE IDNO = '" + idNumber + "'";
+				      String sqlp = "SELECT password FROM student WHERE id = '" + idNumber + "'";
 				      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sqlp);
 				      
 				      while(bitsdatabase.resultset.next()){
@@ -201,32 +201,35 @@ public class Login {
 			this.checkpass = password;			
 			boolean flag1 = false;
 			bitsdatabase.setupDB();
-		      
+		    String usr1="anull";
+		    String usr2="bnull";
 		      String sqlu = "SELECT uname FROM " + messName + "MessCrew WHERE uname = '" + uname + "'";
 		      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sqlu);
 		      
 		      while(bitsdatabase.resultset.next()){
 		    		  //Retrieve by column name
-		    	  	this.messcrew.uName = bitsdatabase.resultset.getString("uname");
-		    		  flag1 = true;
+		    	  	//this.messcrew.uName = bitsdatabase.resultset.getString("uname");
+		    	  usr1=bitsdatabase.resultset.getString("uname");
+		    	  flag1 = true;
 		      }
 		      
 		      //Check user
-		      if(flag1 == true && this.messcrew.uName.equalsIgnoreCase(checkusr)) {
+		      if(flag1 == true ) {
 		    	  System.out.println("Mess Crew Username Matched.");
 		    	  try{
 		    		  boolean flag2 = false;
 		    		  bitsdatabase.setupDB();
 				      
-				      String sqlp = "SELECT password FROM " + messName + "MessCrew WHERE uname = '" + uname + "'";
+				      String sqlp = "SELECT uname, password FROM " + messName + "MessCrew WHERE password = '" + password + "'";
 				      bitsdatabase.resultset = bitsdatabase.statement.executeQuery(sqlp);
 				      
 				      while(bitsdatabase.resultset.next()){
-				    		  //Retrieve by column name
-				    	  	this.messcrew.password = bitsdatabase.resultset.getString("password");
+				    		usr2=bitsdatabase.resultset.getString("uname");  
+				    	  //Retrieve by column name
+				    	  	//this.messcrew.password = bitsdatabase.resultset.getString("password");
 				    		  flag2 = true;
 				      }
-				      if(flag2 == true && this.messcrew.password.equals(checkpass)) {
+				      if((flag2 == true)&&(usr1.equals(usr2))) {
 				    	  System.out.println("Password Matched. Logged In.");
 				    	  this.messcrew.authStatus = true;
 				    	  bitsdatabase.shutdownDB();

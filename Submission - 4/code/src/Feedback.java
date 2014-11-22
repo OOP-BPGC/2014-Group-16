@@ -1,44 +1,47 @@
-package src;
+package project;
+
+
 
 import java.sql.SQLException;
 
-/**
- * 
- * @author Siddhant, Varun
- *
- */
-public final class Feedback {  
+public final class Feedback {
+	static int total=0;
+	static String []studentFeedback;
+	static String feedback;
+	static BitsDatabase db=new BitsDatabase();
+
 	
-	BitsDatabase bitsdatabase;
-	
-	public Feedback() {
-	bitsdatabase = new BitsDatabase();
+	static String getFeedback(int i) throws Exception{
+		//called by MessAdmin to view a particular Feedback; For GUI purposes
+		feedback=db.getFeedback(i);
+		return feedback;	
 	}
 	
-	void addGuestFeedback(String name, String comments) {
-		try{
-			bitsdatabase.setupDB();
-			
-			String sql = "INSERT INTO GuestFeedback VALUES (" + name + ", " + comments + ")";
-			bitsdatabase.statement.executeUpdate(sql);
-		}catch(SQLException se){
-			//Handle errors for JDBC
-			se.printStackTrace();
-		}catch(Exception e){
-			//Handle errors for Class.forName
-			e.printStackTrace();
-		}finally{
-			//finally block used to close resources
-			bitsdatabase.shutdownDB();
+	static String[] getFeedback() throws SQLException{
+		//called by MessAdmin to view all the unread Feedback; For GUI purposes
+		studentFeedback=db.getFeedback();
+		return studentFeedback;	
+	}
+	
+	static void giveFeedback(String Feedback) throws SQLException{
+		//invoked by student to give Feedback
+		db.addFeedback(Feedback);
+		
+	}
+	static void clearFeedback() throws SQLException{
+		//clear the feedback array, after MessAdmin views it;
+		db.clearFeedback();
+		for(int i=0;i<total;i++){
+		studentFeedback[i]=null;	
 		}
 	}
 	
-	void addStudentFeedback(String name, String comments) {
+	static void addStudentFeedback(String name, String comments) {
 		try{
-			bitsdatabase.setupDB();
+			db.setupFeedbackDB();
 			
-			String sql = "INSERT INTO StudentFeedback VALUES (" + name + ", " + comments + ")";
-			bitsdatabase.statement.executeUpdate(sql);
+			String sql = "INSERT INTO StudentFeedback(name, feedback) VALUES ('" + name + "', '" + comments + "')";
+			db.statement.executeUpdate(sql);
 		}catch(SQLException se){
 			//Handle errors for JDBC
 			se.printStackTrace();
@@ -47,8 +50,27 @@ public final class Feedback {
 			e.printStackTrace();
 		}finally{
 			//finally block used to close resources
-			bitsdatabase.shutdownDB();
+			db.shutdownDB();
+		}
+	}
+	
+	static void addGuestFeedback(String name, String comments) {
+		try{
+			db.setupFeedbackDB();
+			
+			String sql = "INSERT INTO GuestFeedback(name,feedback) VALUES ('" + name + "', '" + comments + "');";
+			db.statement.executeUpdate(sql);
+		}catch(SQLException se){
+			//Handle errors for JDBC
+			se.printStackTrace();
+		}catch(Exception e){
+			//Handle errors for Class.forName
+			e.printStackTrace();
+		}finally{
+			//finally block used to close resources
+			db.shutdownDB();
 		}
 	}
 	
 }
+
