@@ -52,7 +52,7 @@ PLUGINS USED:
 	
 	The root password for the MySQL database must be 1234
 	
-	We have also provided the requisite .jar files in the bin folder to run the program directly after setting up the database as mentioned above.
+	We have also provided the requisite .jar file - MessManagementV1_02.jar in the bin folder to run the program directly after setting up the database as mentioned above.
 
 	
 
