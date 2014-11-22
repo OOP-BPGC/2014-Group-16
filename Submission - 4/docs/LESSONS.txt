@@ -1,0 +1,27 @@
+LESSONS (Group 16)
+	It has been a pleasant experience working together with a group that had members with diverse skill sets, opinions and experiences. The combined efforts of our group have manifested into satisfying results. The following write-up presents a short summary our creative journey.
+
+Positives of the group:
+* Students are from different batches (2012, 2013), different streams (CS, EEE, Chemistry) and having different fields of expertise. For instance, some of us had experience with GUI, some with MySQL and others with coding in general. This went a long way for our project.
+
+* There was no friction within our group as all members were friendly and had good professional conduct.
+
+* All group members have respect for time and our submissions were mostly on time.
+
+			
+
+Negatives of the group:
+* None of the group members had prior experience with Java or JDBC.
+
+* We didn't work in advance of time and always tried to follow deadlines rather than exceed them.
+
+* We weren't willing to take any risks with our project. Our focus was on implementing a simple solution to ensure everything works out well.
+
+
+C. What would we do differently if we do the project again:
+* We would write the code before writing JUnit tests as we believe that coding and JUnit testing should go hand in hand.
+
+
+* We would not use WindowBuilder plugin for implementing our GUI. Instead, we would use a solution that allows adjustment of screen resolution to ensure compatibility with multiple systems.
+
+* We would simultaneously develop a mobile app for our project and try to gain bonus marks at each stage.
