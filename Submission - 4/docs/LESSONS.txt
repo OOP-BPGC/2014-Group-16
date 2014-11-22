@@ -1,7 +1,7 @@
 LESSONS (Group 16)
 	It has been a pleasant experience working together with a group that had members with diverse skill sets, opinions and experiences. The combined efforts of our group have manifested into satisfying results. The following write-up presents a short summary our creative journey.
 
-Positives of the group:
+A. Positives of the group:
 * Students are from different batches (2012, 2013), different streams (CS, EEE, Chemistry) and having different fields of expertise. For instance, some of us had experience with GUI, some with MySQL and others with coding in general. This went a long way for our project.
 
 * There was no friction within our group as all members were friendly and had good professional conduct.
@@ -9,8 +9,7 @@ Positives of the group:
 * All group members have respect for time and our submissions were mostly on time.
 
 			
-
-Negatives of the group:
+B. Negatives of the group:
 * None of the group members had prior experience with Java or JDBC.
 
 * We didn't work in advance of time and always tried to follow deadlines rather than exceed them.
