@@ -1,0 +1,36 @@
+USECASE: Student Login
+Sample input:	Username:2014b4a4444g	
+				Password:imawesome
+Sample output: opens student homepage
+
+
+USECASE: MessAdmin Login
+Sample input:	Username: amessboss
+				Password: imtheboss
+				A Mess
+Sample output:	opens mess admin databse
+
+
+USECASE: MessCrew Login
+Sample input:	Username: master
+				Password: cricket
+				A Mess
+Sample output:	opens mess crew database				
+
+
+USECASE: Student CheckIn
+Sample input:	Username:2014b4a444g		
+				A Mess
+				
+Sample output:	1st time- Succesfuly Checked input
+				2nd time- Student has already eaten
+
+
+USECASE: Guest CheckIn
+Sample input:	No input required
+Sample output:	opens guest honepage
+
+
+USECASE: Update FoodStock
+Sample input:	item:Potato lot:<any integer>
+Sample output:	foodstock succesfully updated

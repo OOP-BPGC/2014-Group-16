@@ -48,7 +48,7 @@ REQUIREMENTS:
 PLUGINS USED:
 1. WindowsBuilder Pro for Eclipse (not required to run our program)
 
-	In order to recreate our execution instance, the MessData.sql file must be opened in notepad and it's contents must be copy-pasted into the MySQL command line application. This will setup the database as required. Driver.java in the src folder is the main file that can be used to run our program from Eclipse.
+	In order to recreate our execution instance, the MessData.sql file in the lib folder must be opened in notepad and it's contents must be copy-pasted into the MySQL command line application. This will setup the database as required. Driver.java in the src folder is the main file that can be used to run our program from Eclipse.
 	
 	The root password for the MySQL database must be 1234
 	
